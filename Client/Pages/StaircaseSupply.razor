@@ -164,6 +164,7 @@
 @inject Pressures p
 @inject MethodsSupplyStair m
 @inject IJSRuntime js
+@inject IMatToaster toast
 @code {
     public Dictionary<string, object> resultsAttr;
     public Dictionary<string, object> _212attr1;
@@ -309,49 +310,58 @@
     public void _205AFloorLevels()
     {
         counter++;
-        if (_205Chips.Count() < counter)
+        try
         {
-            counter = _205Chips.Count();
+            if (_205Chips.Count() < counter)
+            {
+                counter = _205Chips.Count();
+                Console.WriteLine($"counter : {counter}");
+                Console.WriteLine($"chipses : {_205Chips.Count()}");
+                if (ranges.First().Contains("-"))
+                {
+                    fl.RemoveRange((Convert.ToInt32(ranges.First().Split("-")[0]), Convert.ToInt32(ranges.First().Split("-")[1])));
+                }
+                else
+                {
+                    fl.RemoveSingle(Convert.ToInt32(ranges.First()));
+                }
+                ranges.Pop();
+                foreach (var item in ranges)
+                {
+                    Console.WriteLine($"ranges: {item}");
+                }
+                return;
+            }
             Console.WriteLine($"counter : {counter}");
             Console.WriteLine($"chipses : {_205Chips.Count()}");
-            if (ranges.First().Contains("-"))
+            var lch = _205Chips.Last();
+            int rangeStart, rangeEnd, single;
+            double height;
+            if (_205Chips.Last().Contains("-"))
             {
-                fl.RemoveRange((Convert.ToInt32(ranges.First().Split("-")[0]), Convert.ToInt32(ranges.First().Split("-")[1])));
+                rangeStart = Convert.ToInt32(lch.Split("-")[0]);
+                rangeEnd = Convert.ToInt32(lch.Split(";")[0].Split("-")[1]);
+                height = Convert.ToDouble(lch.Split(";")[1]);
+                fl.AddRange((rangeStart, rangeEnd), height);
+                ranges.Push(lch.Split(";")[0]);
             }
             else
             {
-                fl.RemoveSingle(Convert.ToInt32(ranges.First()));
+                single = Convert.ToInt32(lch.Split(";")[0]);
+                height = Convert.ToDouble(lch.Split(";")[1]);
+                fl.AddSingle(single, height);
+                ranges.Push(lch.Split(";")[0]);
             }
-            ranges.Pop();
             foreach (var item in ranges)
             {
                 Console.WriteLine($"ranges: {item}");
             }
-            return;
         }
-        Console.WriteLine($"counter : {counter}");
-        Console.WriteLine($"chipses : {_205Chips.Count()}");
-        var lch = _205Chips.Last();
-        int rangeStart, rangeEnd, single;
-        double height;
-        if (_205Chips.Last().Contains("-"))
+        catch (Exception e)
         {
-            rangeStart = Convert.ToInt32(lch.Split("-")[0]);
-            rangeEnd = Convert.ToInt32(lch.Split(";")[0].Split("-")[1]);
-            height = Convert.ToDouble(lch.Split(";")[1]);
-            fl.AddRange((rangeStart, rangeEnd), height);
-            ranges.Push(lch.Split(";")[0]);
-        }
-        else
-        {
-            single = Convert.ToInt32(lch.Split(";")[0]);
-            height = Convert.ToDouble(lch.Split(";")[1]);
-            fl.AddSingle(single, height);
-            ranges.Push(lch.Split(";")[0]);
-        }
-        foreach (var item in ranges)
-        {
-            Console.WriteLine($"ranges: {item}");
+
+            Console.WriteLine($"{e.Message}");
+            toast.Add(e.Message, MatToastType.Warning);
         }
 
 

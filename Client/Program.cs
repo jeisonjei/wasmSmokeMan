@@ -14,6 +14,7 @@ using UnitsNet;
 using wasmSmokeMan.Shared.NaturalPhenomenaDependent;
 using wasmSmokeMan.Shared.CompoundObjects;
 using wasmSmokeMan.Shared.Functions;
+using MatBlazor;
 
 namespace wasmSmokeMan.Client
 {
@@ -41,6 +42,15 @@ namespace wasmSmokeMan.Client
             builder.Services.AddSingleton(window);
             builder.Services.AddSingleton(stair);
             builder.Services.AddSingleton(methodsSupplyStair);
+            builder.Services.AddMatToaster(config =>
+            {
+                config.Position = MatToastPosition.BottomRight;
+                config.PreventDuplicates = true;
+                config.NewestOnTop = true;
+                config.ShowCloseButton = true;
+                config.MaximumOpacity = 95;
+                config.VisibleStateDuration = 3000;
+            });
             await builder.Build().RunAsync();
         }
     }

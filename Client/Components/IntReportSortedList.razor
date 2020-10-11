@@ -1,0 +1,34 @@
+﻿@if (Show)
+{
+
+    int i = 1;
+    <table id="intreportsortedlist" class="table small">
+        <thead class="thead-light">
+            <tr>
+                <th>Этаж</th>
+                <th>Высота</th>
+                <th>Отметка</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Items)
+            {
+                <tr>
+                    <td>@item.Key</td>
+                    <td>@Math.Round(item.Value.Item1,2)</td>
+                    <td>@Math.Round(item.Value.Item2,2)</td>
+                </tr>
+                i++;
+            }
+        </tbody>
+    </table>
+    <div class="row"><div class="col"><span class="badge badge-secondary d-block"></span></div></div>
+}
+
+
+@code{
+    [Parameter]
+    public bool Show { get; set; } = false;
+    [Parameter]
+    public SortedList<int, (double, double)> Items { get; set; } = new SortedList<int, (double, double)>();
+}

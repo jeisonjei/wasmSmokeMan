@@ -1,0 +1,73 @@
+﻿<div class="form-group" style="margin-bottom: 16;">
+    <div class="row justify-content-between">
+        <div class="col"><label class="col-form-label">@Label</label></div>
+        <div class="col col-1 d-flex align-items-center justify-content-end">
+            <a class="pop" tabindex="-1" href="#" data-toggle="popover" title="@PopTitle" data-content="@DataContent" data-html="true" @onclick:preventDefault="true"><span class="fas fa-question-circle px-0 py-0" style="border-color: rgb(45,140,241);"></span></a>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col was-validated"><input type="text" required pattern="(-|)\d+\.{0,1}\b\d*" class="form-control" @bind:event="oninput" @bind="@Number" /></div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string Label { get; set; }
+    [Parameter]
+    public string PopTitle { get; set; }
+    [Parameter]
+    public string PopContent { get; set; }
+    [Parameter]
+    public string PopRef { get; set; }
+    [Parameter]
+    public string PopLinkUri { get; set; }
+    [Parameter]
+    public string PopLinkText { get; set; }
+    [Parameter]
+    public EventCallback<string> NumberChanged { get; set; }
+    private string number;
+    [Parameter]
+    public string Number
+    {
+        get => this.number;
+        set
+        {
+            if (number != value)
+            {
+                this.number = value;
+                NumberChanged.InvokeAsync(this.number);
+            }
+        }
+    }
+    string dataContent;
+    public string DataContent
+    {
+        get
+        {
+            if (PopLinkUri != null && PopRef != null)
+            {
+                this.dataContent = $"{PopContent}<span class='badge badge-warning d-block text-left'><em>{PopRef}</em></span><a href='{PopLinkUri}' target='_blank'><span class='badge badge-primary d-inline-block'>{PopLinkText}</span></a>";
+            }
+            else if (PopLinkUri == null && PopRef != null)
+            {
+                this.dataContent = $"{PopContent}<span class='badge badge-warning d-block text-left'><em>{PopRef}</em></span>";
+            }
+            else if (PopLinkUri != null && PopRef == null)
+            {
+                this.dataContent = $"{PopContent} <a href='{PopLinkUri}' target='_blank'><span class='badge badge-primary d-inline-block'>{PopLinkText}</span></a>";
+            }
+            else if (PopLinkUri == null && PopRef == null)
+            {
+                this.dataContent = $"{PopContent}";
+            }
+            return this.dataContent;
+        }
+        set
+        {
+            this.dataContent = value;
+        }
+    }
+
+}

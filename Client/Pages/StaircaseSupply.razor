@@ -1,0 +1,453 @@
+﻿@page "/staircasesupply"
+<div class="container-fluid px-3">
+    @* overflow-hidden" style="height:92.5vh" *@
+    <h2 class="text-center">Подпор в лестничную клетку</h2>
+    <hr class="my-2" />
+    <div class="row">
+        @*<div class="row">
+            <div class="col">
+                <p>@m.Stair.Window.ToJson()</p>
+                <hr />
+                <p>@m.Climate.ToJson()</p>
+                <hr />
+                <p>@p.ToJson()</p>
+                <hr />
+            </div>
+        </div>*@
+        <div class="col-md-4 col-lg-4 col-xl-3">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Тип расчёта</a>
+                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Температура воздуха</a>
+                <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Параметры ЛК</a>
+                <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Двери и окна</a>
+                <div class="mt-2">
+                    <button class="btn btn-outline-danger btn-lg" @onclick="CompAll">Расчёт</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 col-lg-3 col-xl-4 overflow-auto" style="height:85vh">
+            <div class="row">
+                <div class="col">
+                    <div class="tab-content" id="v-pills-tabContent">
+                        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                            @*inputs*@
+                            <p>Располжение ЛК</p>
+                            <RadzenSelectBar TValue="int">
+                                <Items>
+                                    <RadzenSelectBarItem Text="Примыкает к стене" Value="1"></RadzenSelectBarItem>
+                                    <RadzenSelectBarItem Text="В ядре здания" Value="2"></RadzenSelectBarItem>
+                                </Items>
+                            </RadzenSelectBar>
+                        </div>
+                        @*температура воздуха*@
+                        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                            <InpSingle Label="@_201TempOutsideFN" PopTitle="@PopTitle" PopContent="@_201TempOutsidePC" PopRef="@_201TempOutsidePopRef" NumberChanged="@_201ATempOutside"></InpSingle>
+                            <InpSingle Label="@_202TempInsideFN" PopTitle="@PopTitle" PopContent="@_202TempInsidePC" NumberChanged="@_202ATempInside"></InpSingle>
+                            <InpSingle Label="@_214WindVelocityFN" PopTitle="@PopTitle" PopContent="@_214WindVelocityPC" PopRef="@_214WindVelocityPopRef" NumberChanged="_214AWindVelocity"></InpSingle>
+                        </div>
+                        @*этажи*@
+                        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                            <InpSingle Label="@_209StaircaseAreaFN" PopTitle="@PopTitle" PopContent="@_209StaircaseAreaPC" NumberChanged="@_209AStaircaseArea"></InpSingle>
+                            <InpSingle Label="@_210StaircaseDoorQuFN" PopTitle="@PopTitle" PopContent="@_210StaircaseDoorQuPC" NumberChanged="@_210AStaircaseDoorQu"></InpSingle>
+                            <Sel Label="@_211StaircasePortalTypeFN" PopTitle="@PopTitle" PopContent="@_211StaircasePoprtalTypePC" Items="@starecasePortalTypes" NumberChanged="@_211AStaircasePortalType"></Sel>
+                            <InpSingle Label="@_204FirstFloorFN" PopTitle="@PopTitle" PopContent="@_204FirstFloorPC" NumberChanged="@_204AFirstFloor"></InpSingle>
+                            <InpSingle Label="@_203QuFloorsFN" PopTitle="@PopTitle" PopContent="@_203QuFloorsPC" NumberChanged="@_203AQuFloors"></InpSingle>
+                            <ChipsInput Label="@_205ChipsFN" PopTitle="@PopTitle" PopContent="@_205ChipsPC" Chips="@_205Chips" ShowInputOutline="true" EnableBackspaceRemove="true" OnChipsChanged="_205AFloorLevels" OnFocus="_205ShowToggle" OnFocusOut="_205HideToggle"></ChipsInput>
+                            <IntReportSortedList Show="@_205Show" Items="@fl.Levels"></IntReportSortedList>
+                        </div>
+                        @*двери и окна*@
+                        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                            <InpGroup Label="@_206DoorOutsideFN" PopTitle="@PopTitle" PopContent="@_206DoorOutsidePC" Number1Changed="@_206ADoorOutsideWidth" Number2Changed="@_206ADoorOutsideHeight"></InpGroup>
+                            <InpGroup Label="@_207DoorInsideFN" PopTitle="@PopTitle" PopContent="@_207DoorInsidePC" Number1Changed="@_207ADoorInsideWidth" Number2Changed="@_207ADoorInsideHeight"></InpGroup>
+
+                            <div class="form-group" style="margin-bottom: 16;">
+                                <div class="row justify-content-between">
+                                    <div class="col"><label class="col-form-label">@_213DoorInsideTypeFN</label></div>
+                                    <div class="col col-1 d-flex align-items-center justify-content-end">
+                                        <a class="pop" tabindex="-1" href="#" data-toggle="popover" title="@PopTitle" data-content="@_213DoorInsideTypePC" data-html="true" @onclick:preventDefault="true"><span class="fas fa-question-circle px-0 py-0" style="border-color: rgb(45,140,241);"></span></a>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <RadzenSelectBar TValue="int" @bind-Value="@_212Value" Change="_212ShowToggle">
+                                            <Items>
+                                                <RadzenSelectBarItem Attributes="@_212attr1" Text="ОБ" Value="1"></RadzenSelectBarItem>
+                                                <RadzenSelectBarItem Attributes="@_212attr2" Text="ДЫМ" Value="2"></RadzenSelectBarItem>
+                                                <RadzenSelectBarItem Attributes="@_212attr3" Text="П" Value="3"></RadzenSelectBarItem>
+                                            </Items>
+                                        </RadzenSelectBar>
+                                    </div>
+                                </div>
+                            </div>
+                            @if (_212Show)
+                            {
+                                <InpSingle Label="@_212DoorInsideSmokeResistanceFN" PopTitle="@PopTitle" PopContent="@_212DoorInsideSmokeResistancePC" NumberChanged="_212ADoorInsideSmokeResistance"></InpSingle>
+                            }
+                            <InpGroup Label="@_208WindowFN" PopTitle="@PopTitle" PopContent="@_208WindowPC" Number1Changed="@_208AWindowWidth" Number2Changed="@_208AWindowHeight"></InpGroup>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div @attributes="@resultsAttr" class="col-lg-5 col-xl-5 overflow-auto" style="height:85vh">
+            <IntResultSingle Name="Температура наружного воздуха" Val="@Math.Round(cl.TempOutside,2)"></IntResultSingle>
+            <IntResultSingle Name="Температура внутреннего воздуха" Val="@Math.Round(cl.TempInside,2)"></IntResultSingle>
+            <IntResultSingle Name="Температура приточного воздуха" Val="@Math.Round(cl.TempSupply,2)"></IntResultSingle>
+            <IntResultSingle Name="Плотность наружного воздуха" Val="@Math.Round(cl.DensityOutside,2)"></IntResultSingle>
+            <IntResultSingle Name="Плотность внутреннего воздуха" Val="@Math.Round(cl.DensityInside,2)"></IntResultSingle>
+            <IntResultSingle Name="Плотность приточного воздуха" Val="@Math.Round(cl.DensitySupply,3)" Units="кг/м³"></IntResultSingle>
+            <IntResultSingle Name="Первый этаж" Val="@fl.First" />
+            <IntResultSingle Name="Количество этажей" Val="@fl.Qu" />
+            <IntResultGroup Name="Наружная дверь" Val1="@dro.Width" Val2="@dro.Height" Units="м"></IntResultGroup>
+            <IntResultGroup Name="Внутренняя дверь" Val1="@dri.Width" Val2="@dri.Height" Units="м"></IntResultGroup>
+            <IntResultSingle Name="Сопротивление дымопроницанию двери" Val="@Math.Round(dri.SmokeResistance,0)" Units="м³/кг"></IntResultSingle>
+            <IntResultGroup Name="Окна на этажах ЛК" Val1="@w.Width" Val2="@w.Height" Units="м"></IntResultGroup>
+            <IntResultSingle Name="Давление снаружи" Val="@Math.Round(p.OutsideDeltaPMax,1)" Units="Па"></IntResultSingle>
+            <IntResultSingle Name="Площадь ЛК" Val="@st.Area" Units="м²"></IntResultSingle>
+            <IntResultSingle Name="Количество дверей ЛК" Val="@st.QuDoorOutside"></IntResultSingle>
+            <IntResultSingle Name="Тип тамбура ЛК" Val="@st.KsiR"></IntResultSingle>
+            <table id="table" class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Этаж</th>
+                        <th>Уровень</th>
+                        <th>Давление</th>
+                        <th>Дверь</th>
+                        <th>Окно</th>
+                        <th>Сумма</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in m.EachFloorResults)
+                    {
+                        <tr><td>@row.LevelKey</td><td>@(Math.Round(row.LevelValue,2))</td><td>@(Math.Round(row.P,1))</td><td>@(Math.Round(row.Gsd,3))</td><td>@(Math.Round(row.Gsw,3))</td><td>@(Math.Round(row.Gsum,3))</td></tr>
+                    }
+                </tbody>
+
+            </table>
+            @*для проверки*@
+            @*<IntResultSingle Name="Температура наружн." Val="@m.Climate.TempOutside"></IntResultSingle>
+            <IntResultSingle Name="Температура внутр." Val="@m.Climate.TempInside"></IntResultSingle>
+            <IntResultGroup Name="Дверь нар." Val1="@m.Stair.DoorOutside.Width" Val2="@m.Stair.DoorOutside.Height"></IntResultGroup>
+            <IntResultGroup Name="Дверь внутр." Val1="@m.Stair.DoorInside.Width" Val2="@m.Stair.DoorInside.Height"></IntResultGroup>
+            <IntResultGroup Name="Окно" Val1="@m.Stair.Window.Width" Val2="@m.Stair.Window.Height"></IntResultGroup>
+            <IntResultSingle Name="Окно воздухопрониц." Val="@m.Stair.Window.BreathabilityGn"></IntResultSingle>
+            <IntResultSingle Name="Окно сопротивл." Val="@Math.Round(m.Stair.Window.AirResistanceRn,2)"></IntResultSingle>
+            <IntResultSingle Name="Давление снаружи" Val="@Math.Round(m.Stair.Window.Pressures.OutsideDeltaPMax)"></IntResultSingle>
+            <IntResultSingle Name="Высота здания" Val="@m.Stair.Floors.HeightFromFirstToTopOfTheShaft"></IntResultSingle>
+            <IntResultSingle Name="Pwind" Val="@(Math.Round(m.Pwind,2))"></IntResultSingle>
+            <IntResultSingle Name="Gsa" Val="@Math.Round(m.Gsa_24,2)"></IntResultSingle>
+            <IntResultSingle Name="Ps2" Val="@Math.Round(m.Ps2_23,2)"></IntResultSingle>*@
+
+
+            @*---*@
+            <IntResultSingle Name="Производительность вентилятора" Val="@(Math.Round(m.Lv))" Units="м³/ч"></IntResultSingle>
+
+        </div>
+    </div>
+
+    
+</div>
+
+
+
+@using System
+@inject Climate cl
+@inject Floors fl
+@inject DoorOutside dro
+@inject DoorInside dri
+@inject Window w
+@inject StairCase st
+@inject Pressures p
+@inject MethodsSupplyStair m
+@inject IJSRuntime js
+@code {
+    public Dictionary<string, object> resultsAttr;
+    public Dictionary<string, object> _212attr1;
+    public Dictionary<string, object> _212attr2;
+    public Dictionary<string, object> _212attr3;
+
+    public int _212Value { get; set; } = 1;
+    void _212ShowToggle()
+    {
+        if (_212Value == 1)
+        {
+            _212Show = false;
+            dri.SetDoorType(DoorInside.Type.Usual);
+        }
+        else if (_212Value == 2)
+        {
+            _212Show = false;
+            dri.SetDoorType(DoorInside.Type.SmokeResistant);
+        }
+        else if (_212Value == 3)
+        {
+            _212Show = true;
+            dri.SmokeResistance = 0;
+        }
+    }
+    public bool _212Show { get; set; } = false;
+
+    List<string> _205Chips { get; set; } = new List<string>();
+    public bool _205Show { get; set; }
+    void _205ShowToggle()
+    {
+        _205Show = true;
+    }
+    void _205HideToggle()
+    {
+        _205Show = false;
+    }
+    protected override void OnInitialized()
+    {
+        _212attr1 = new Dictionary<string, object>();
+        _212attr1.Add("data-toggle", "tooltip");
+        _212attr1.Add("data-placement", "top");
+        _212attr1.Add("data-title", "Обычная дверь");
+        _212attr2 = new Dictionary<string, object>();
+        _212attr2.Add("data-toggle", "tooltip");
+        _212attr2.Add("data-placement", "top");
+        _212attr2.Add("data-title", "Дымогазонепроницаемая дверь");
+        _212attr3 = new Dictionary<string, object>();
+        _212attr3.Add("data-toggle", "tooltip");
+        _212attr3.Add("data-placement", "top");
+        _212attr3.Add("data-title", "Пользовательское значение");
+        resultsAttr = new Dictionary<string, object>();
+        resultsAttr.Add("id", "results");
+    }
+    int RenderComplete { get; set; }
+    protected override async Task OnAfterRenderAsync(bool first)
+
+    {
+        await js.InvokeVoidAsync("funcs.pop");
+        await js.InvokeVoidAsync("funcs.selectpicker");
+        await js.InvokeVoidAsync("funcs.tooltip");
+        RenderComplete = 1;
+
+    }
+    #region fields
+    public string PopTitle { get; set; } = "Информация";
+    public string _201TempOutsideFN { get; set; } = "Температура снаружи, °C";
+    public string _201TempOutsidePC { get; set; } = "Температура наружного воздуха в холодный период года";
+    public string _201TempOutsidePopRef { get; set; } = "СП 131.13330.2018 таблица 3.1 колонка 5";
+    public string _202TempInsideFN { get; set; } = "Температура внутри, °C";
+    public string _202TempInsidePC { get; set; } = "Температура внутреннего воздуха принимается по технологии эксплуатации здания (раздел проекта ТХ). Обычно для зимнего периода можно принимать 18-22°C";
+    public string _203QuFloorsFN { get; set; } = "Количество этажей";
+    public string _203QuFloorsPC { get; set; } = "Общее количество этажей, на которых располагается лестничная клетка включая подземные этажи при наличии";
+    public string _204FirstFloorFN { get; set; } = "Индекс первого этажа";
+    public string _204FirstFloorPC { get; set; } = "Этаж, который является первым для лестничной клетки. В этом поле указывается индекс <code>1, 2, 3</code> или <code>-1, -2, -3</code> в случае, если этажи подземные. Индекс <code>0</code> не используется - для первого надземного этажа используется индекс <code>1</code>, а для первого подземного индекс <code>-1</code>";
+    public string _205ChipsFN { get; set; } = "Этажи";
+    public string _205ChipsPC { get; set; } = "В это поле добавляются этажи здания. Индекс этажа и высота вводятся в следующем формате:</br><code>[индекс];[высота]</code> - для добавления одного этажа, например</br><code>1;4.5</code> означает добавить 1-ый этаж, высотой 4.5 метра, или</br><code>[индекс первого этажа диапазона]-[индекс последнего этажа диапазона];[высота]</code> - для добавления диапазона этажей, например</br><code>2-6;3.15</code> означает добавить этажи со 2-го по 6-ой включительно высотой 3.15 метра. После ввода значений нужно нажать <code>Enter</code>, для удаления используется <code>Backspace</code> Отметки рассчитываются после добавления всех этажей";
+    public string _206DoorOutsideFN { get; set; } = "Наружная дверь на улицу";
+    public string _206DoorOutsidePC { get; set; } = "Ширина и высота двери, ведущей из лестничной клетки на улицу, в метрах";
+    public string _207DoorInsideFN { get; set; } = "Внутренняя дверь из ЛК";
+    //пока подразумевается, что из лестничной клетки нет выхода на первый этаж
+    public string _207DoorInsidePC { get; set; } = "Ширина и высота двери, ведущей из лестничной клетки в коридор 2-го этажа, в метрах";
+    public string _208WindowFN { get; set; } = "Окно на этажах";
+    public string _208WindowPC { get; set; } = "Ширина и высота окна, которое располагается на этажах лестничной клетки. Подразумевается, что все окна одного и того же размера";
+    public string _209StaircaseAreaFN { get; set; } = "Площадь лестничной клетки";
+    public string _209StaircaseAreaPC { get; set; } = "Площадь лестничной клетки";
+    public string _210StaircaseDoorQuFN { get; set; } = "Количество дверей";
+    public string _210StaircaseDoorQuPC { get; set; } = "Количество наружных дверей, если при выходе из лестничной клетки наружу последовательно расположено несколько дверей, как например при наличии тамбура";
+    public string _211StaircasePortalTypeFN { get; set; } = "Тип тамбура";
+    public string _211StaircasePoprtalTypePC { get; set; } = "Тип тамбура лестничной клетки при его наличии - доступные варианты в данной методике расчёта: прямой тамбур, уголовой тамбур (с поворотом), и Z-образный тамбур (с двумя поворотами). От типа тамбура зависит насколько сильное сопротивление встречает воздух, выходящий из лестничной клетки";
+    //поле с этим именем будет отображаться только при выборе значения "пользовательская" на переключателе "тип двери"
+    public string _212DoorInsideSmokeResistanceFN { get; set; } = "Дымогазопроницаемость внутренней двери";
+    public string _212DoorInsideSmokeResistancePC { get; set; } = "В этом поле задаётся значение <em><strong>характеристики удельного сопротивления дымогазопроницанию (м³/кг)</strong></em> закрытой двери если это значение известно по данным производителя дверей. Обычно для расчёта можно значение не указывать, а выбирать переключателем выше 'обычная' или 'дымогазонепроницаемая' - тогда значение вычисляется автоматически";
+    public string _213DoorInsideTypeFN { get; set; } = "Тип двери";
+    public string _213DoorInsideTypePC { get; set; } = "Тип внутренних дверей на этажах, ведущих из коридора в лестничную клетку для определения <em><strong>характеристики удельного сопротивления дымогазопроницанию (S)</strong></em>. Переключателем выбирается <code>обычная</code>, <code>дымогазонепроницаемая</code> или <code>пользовательская</code>. В зависимости от выбранных значений величина <em><strong>S</strong></em> вычисляется автоматически или задаётся если она известна";
+    public string _214WindVelocityFN { get; set; } = "Скорость ветра";
+    public string _214WindVelocityPC { get; set; } = "Максимальная из скоростей ветра по румбам за январь для района строительства";
+    public string _214WindVelocityPopRef { get; set; } = "СП 131.13330.2018 Таблица 3.1 Колонка 19";
+
+    #endregion
+    #region assigngs
+    #region tempoutside
+    public void _201ATempOutside(string tempOutside)
+    {
+        cl.TempOutside = Convert.ToDouble(tempOutside);
+        dri.Climate = cl;
+    }
+    #endregion
+    #region tempinside
+    public void _202ATempInside(string tempInside)
+    {
+        cl.TempInside = Convert.ToDouble(tempInside);
+        dri.Climate = cl;
+    }
+    #endregion
+    #region windVelocity
+    void _214AWindVelocity(string windVelocity)
+    {
+        cl.WindVelocity = Convert.ToDouble(windVelocity);
+    }
+    #endregion
+    #region qufloors
+    public void _203AQuFloors(string quFloors)
+    {
+        //очистить поле ввода высот этажей при изменении количества этажей.
+        _205Chips.Clear();
+        counter = _205Chips.Count();
+        fl.Qu = Convert.ToInt32(quFloors);
+    }
+    #endregion
+    #region firstfloor
+    public void _204AFirstFloor(string firstFloor)
+    {
+        //очистить поле ввода высот этажей при изменении индекса первого этажа
+        _205Chips.Clear();
+        counter = _205Chips.Count();
+        fl.First = Convert.ToInt32(firstFloor);
+    }
+    #endregion
+    int counter = 0;
+    Stack<string> ranges = new Stack<string>();
+    #region floorlevels
+    public void _205AFloorLevels()
+    {
+        counter++;
+        if (_205Chips.Count() < counter)
+        {
+            counter = _205Chips.Count();
+            Console.WriteLine($"counter : {counter}");
+            Console.WriteLine($"chipses : {_205Chips.Count()}");
+            if (ranges.First().Contains("-"))
+            {
+                fl.RemoveRange((Convert.ToInt32(ranges.First().Split("-")[0]), Convert.ToInt32(ranges.First().Split("-")[1])));
+            }
+            else
+            {
+                fl.RemoveSingle(Convert.ToInt32(ranges.First()));
+            }
+            ranges.Pop();
+            foreach (var item in ranges)
+            {
+                Console.WriteLine($"ranges: {item}");
+            }
+            return;
+        }
+        Console.WriteLine($"counter : {counter}");
+        Console.WriteLine($"chipses : {_205Chips.Count()}");
+        var lch = _205Chips.Last();
+        int rangeStart, rangeEnd, single;
+        double height;
+        if (_205Chips.Last().Contains("-"))
+        {
+            rangeStart = Convert.ToInt32(lch.Split("-")[0]);
+            rangeEnd = Convert.ToInt32(lch.Split(";")[0].Split("-")[1]);
+            height = Convert.ToDouble(lch.Split(";")[1]);
+            fl.AddRange((rangeStart, rangeEnd), height);
+            ranges.Push(lch.Split(";")[0]);
+        }
+        else
+        {
+            single = Convert.ToInt32(lch.Split(";")[0]);
+            height = Convert.ToDouble(lch.Split(";")[1]);
+            fl.AddSingle(single, height);
+            ranges.Push(lch.Split(";")[0]);
+        }
+        foreach (var item in ranges)
+        {
+            Console.WriteLine($"ranges: {item}");
+        }
+
+
+    }
+    #endregion
+    #region dooroutside
+    void _206ADoorOutsideWidth(string doorOutsideWidth)
+    {
+        dro.Width = Convert.ToDouble(doorOutsideWidth);
+        st.DoorOutside = dro;
+        m.Stair = st;
+    }
+    void _206ADoorOutsideHeight(string doorOutsideHeight)
+    {
+        dro.Height = Convert.ToDouble(doorOutsideHeight);
+        st.DoorOutside = dro;
+        m.Stair = st;
+    }
+    #endregion
+    #region doorinside
+    void _207ADoorInsideWidth(string doorInsideWidth)
+    {
+        dri.Width = Convert.ToDouble(doorInsideWidth);
+    }
+    void _207ADoorInsideHeight(string doorInsideHeight)
+    {
+        dri.Height = Convert.ToDouble(doorInsideHeight);
+    }
+    void _212ADoorInsideSmokeResistance(string doorInsideSmokeResistance)
+    {
+        dri.SmokeResistance = Convert.ToDouble(doorInsideSmokeResistance);
+    }
+    #endregion
+    #region window
+    void _208AWindowWidth(string windowWidth)
+    {
+        w.Width = Convert.ToDouble(windowWidth);
+    }
+    void _208AWindowHeight(string windowHeight)
+    {
+        w.Height = Convert.ToDouble(windowHeight);
+    }
+    #endregion
+    #region staircase
+    List<Sel.Item> starecasePortalTypes = new List<Sel.Item>
+{
+        new Sel.Item{Name="Прямой",Val=0},
+        new Sel.Item{Name="Угловой",Val=0.99},
+        new Sel.Item{Name="Z-образный",Val=2.9},
+    };
+
+    void _209AStaircaseArea(string staircaseArea)
+    {
+        st.Area = Convert.ToDouble(staircaseArea);
+    }
+    void _210AStaircaseDoorQu(string quDoorOutside)
+    {
+        st.QuDoorOutside = Convert.ToInt32(quDoorOutside);
+    }
+    void _211AStaircasePortalType(string val)
+    {
+        switch (Convert.ToDouble(val))
+        {
+            case 0:
+                {
+                    st.PortalType = StairCase.Portal.Straight;
+                    break;
+                }
+            case 0.99:
+                {
+                    st.PortalType = StairCase.Portal.Angular;
+                    break;
+                }
+            case 2.9:
+                {
+                    st.PortalType = StairCase.Portal.ZShape;
+                    break;
+                }
+            default:
+                st.PortalType = StairCase.Portal.Straight;
+                break;
+        }
+    }
+    #endregion
+    #region compall
+    async Task CompAll()
+    {
+        m.EachFloorResults.Clear();
+        m.CompPwind();
+        m.CompPs2_23();
+        m.CompGsa_24();
+        m.CompCollect();
+        Console.WriteLine(resultsAttr.Values);
+        await OnAfterRenderAsync(false);
+        await js.InvokeVoidAsync("funcs.scrollResultDown");
+    }
+    #endregion
+    #endregion
+}

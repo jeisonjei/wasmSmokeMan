@@ -1,0 +1,22 @@
+﻿@if (Show)
+{
+    int i = 1;
+    @*<div class="row"><div class="col"><span class="badge badge-secondary d-block"></span></div></div>*@
+    @foreach (var item in Items)
+    {
+        <div class="row justify-content-start">
+            <div class="col-auto">Проём @i </div>
+            <div class="col-auto mx-0"><em>(Площадь @item.Item1 м²;</em></div>
+            <div class="col-auto mx-0"><em>Высота @item.Item2 м)</em></div>
+        </div>
+        i++;
+    }
+    <div class="row"><div class="col"><span class="badge badge-secondary d-block"></span></div></div>
+}
+
+@code{
+    [Parameter]
+    public bool Show { get; set; } = false;
+    [Parameter]
+    public List<(double, double)> Items { get; set; } = new List<(double, double)>();
+}

@@ -1,86 +1,89 @@
 ﻿@page "/corridorremove"
-<h2 class="text-center">Удаление дыма из коридоров</h2>
-<hr class="my-2" />
-<div class="row">
-    <div class="col-md-4 col-lg-4 col-xl-3">
-        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Помещение и материалы</a>
-            <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Коридор и дверь</a>
-            <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">...</a>
-            <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">...</a>
-        </div>
-    </div>
-    <div class="col-md-8 col-lg-3 col-xl-4">
-        <div class="row">
-            <div class="col">
-                <div class="tab-content" id="v-pills-tabContent">
-                    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                        @*inputs*@
-                        <InpSingle Label="@_10301_1FieldName" PopTitle="@PopTitle" PopContent="@_10301_1PopContent" NumberChanged="@_10301_1AssignRoomArea" />
-                        <InpSingle Label="@_10301_2FieldName" PopTitle="@PopTitle" PopContent="@_10301_2PopContent" NumberChanged="@_10301_2AssignRoomHeight" />
-                        <ChipsInput Label="@_10601FieldName" PopTitle="@PopTitle" PopContent="@_10601PopContent" Chips="@_10601Chips" ShowInputOutline="true" EnableBackspaceRemove="true" OnChipsChanged="_10601AssignOpeningArea" OnFocus="_10601ShowToggle" OnFocusOut="_10601HideToggle"></ChipsInput>
-                        <_10601IntReport Items="@_10601List" Show="@_10601Show"></_10601IntReport>
-                        <InpSingle Label="@_1301FieldName" PopTitle="@PopTitle" PopContent="@_1301PopContent" PopRef="@_1301PopRef" PopLinkText="@_1301PopLink" PopLinkUri="@_1301PopUri" NumberChanged="_1301AssignTempRoomCelsuis" />
-                        <InpSingle Label="@_10201FieldName" PopTitle="@PopTitle" PopContent="@_10201PopContent" NumberChanged="@_10201AssignMassMaterial" />
-                        <Sel Label="@_10202FieldName" Items="@_10202Items" PopTitle="@PopTitle" PopContent="@_10202PopContent" PopRef="@_10202PopRef" NumberChanged="_10202AssignHeatCombustionMaterial" PopLinkUri="https://rb.gy/dqo5nq" PopLinkText="Теплота сгорания"></Sel>
-                    </div>
-                    <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                        <InpSingle Label="@_1605AreaCorridorFieldName" PopTitle="@PopTitle" PopContent="@_1605AreaCorridorPopContent" NumberChanged="_1605AssignAreaCorridor" />
-                        <InpSingle Label="@_1606LengthCorridorFieldName" PopTitle="@PopTitle" PopContent="@_1606LengthCorridorPopContent" NumberChanged="_1606AssignLengthCorridor" />
-                        <InpSingle Label="@_1604_1HeightCorridorFieldName" PopTitle="@PopTitle" PopContent="@_1604_1HeightCorridorPopContent" NumberChanged="_1604_1AssignHeightCorridor" />
+<div class="container-fluid">
+    <h2 class="text-center">Удаление дыма из коридоров</h2>
+    <hr class="my-2" />
 
-                        <InpGroup Label="@_1702_1703FieldName" PopTitle="@PopTitle" PopContent="@_1702_1703PopContent" Number1Changed="_1702AssignDoorWidth" Number2Changed="_1703AssignDoorHeight" />
-                    </div>
-                    <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
-                    <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
-                </div>
+    <div class="row">
+        <div class="col-md-4 col-lg-4 col-xl-3">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Помещение и материалы</a>
+                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Коридор и дверь</a>
+                <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">...</a>
+                <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">...</a>
             </div>
         </div>
-
-    </div>
-    @*//IntResultSingles*@
-    <div class="col-lg-5 col-xl-5">
-        <IntResultSingle Name="Объём" Val="@__200VolumeRoom" Units="м³" />
-        <IntResultSingle Name="Площадь поверхности" Val="@__10300Surface" Units="м²" />
-        <IntResultSingle Name="Площадь проёмов" Val="@__10400OpeningArea" Units="м²" />
-        <IntResultSingle ClassName1="text-danger" ClassName2="text-danger" Name="Удельная пож. нагр. g₀" Val="@__10100FireLoadRoomArea" Units="кг/м²" />
-        <IntResultSingle ClassName1="text-danger" ClassName2="text-danger" Name="Удельная пож. нагр. gₖ" Val="@__10200FireLoadRoomSurf" Units="кг/м²" />
-        <IntResultSingle ClassName1="text-danger" ClassName2="text-danger" Name="Критическая пож. нагр." Val="@__10500FireLoadCrit" Units="кг/м²"><HtmlContent>g<sub>kкр</sub></HtmlContent></IntResultSingle>
-        @if (__10200FireLoadRoomSurf > __10500FireLoadCrit && !Double.IsInfinity(__10200FireLoadRoomSurf) && !Double.IsInfinity(__10500FireLoadCrit))
-        {
-
-            <div class="row mx-1">
-                <span class="oi oi-check"></span>
+        <div class="col-md-8 col-lg-3 col-xl-4">
+            <div class="row">
                 <div class="col">
-                    <div>
-                        <h4 class="text-black-50">Пожар рег. вентиляцией (ПРВ)</h4>
+                    <div class="tab-content" id="v-pills-tabContent">
+                        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                            @*inputs*@
+                            <InpSingle Label="@_10301_1FieldName" PopTitle="@PopTitle" PopContent="@_10301_1PopContent" NumberChanged="@_10301_1AssignRoomArea" />
+                            <InpSingle Label="@_10301_2FieldName" PopTitle="@PopTitle" PopContent="@_10301_2PopContent" NumberChanged="@_10301_2AssignRoomHeight" />
+                            <ChipsInput Label="@_10601FieldName" PopTitle="@PopTitle" PopContent="@_10601PopContent" Chips="@_10601Chips" ShowInputOutline="true" EnableBackspaceRemove="true" OnChipsChanged="_10601AssignOpeningArea" OnFocus="_10601ShowToggle" OnFocusOut="_10601HideToggle"></ChipsInput>
+                            <_10601IntReport Items="@_10601List" Show="@_10601Show"></_10601IntReport>
+                            <InpSingle Label="@_1301FieldName" PopTitle="@PopTitle" PopContent="@_1301PopContent" PopRef="@_1301PopRef" PopLinkText="@_1301PopLink" PopLinkUri="@_1301PopUri" NumberChanged="_1301AssignTempRoomCelsuis" />
+                            <InpSingle Label="@_10201FieldName" PopTitle="@PopTitle" PopContent="@_10201PopContent" NumberChanged="@_10201AssignMassMaterial" />
+                            <Sel Label="@_10202FieldName" Items="@_10202Items" PopTitle="@PopTitle" PopContent="@_10202PopContent" PopRef="@_10202PopRef" NumberChanged="_10202AssignHeatCombustionMaterial" PopLinkUri="https://rb.gy/dqo5nq" PopLinkText="Теплота сгорания"></Sel>
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                            <InpSingle Label="@_1605AreaCorridorFieldName" PopTitle="@PopTitle" PopContent="@_1605AreaCorridorPopContent" NumberChanged="_1605AssignAreaCorridor" />
+                            <InpSingle Label="@_1606LengthCorridorFieldName" PopTitle="@PopTitle" PopContent="@_1606LengthCorridorPopContent" NumberChanged="_1606AssignLengthCorridor" />
+                            <InpSingle Label="@_1604_1HeightCorridorFieldName" PopTitle="@PopTitle" PopContent="@_1604_1HeightCorridorPopContent" NumberChanged="_1604_1AssignHeightCorridor" />
+
+                            <InpGroup Label="@_1702_1703FieldName" PopTitle="@PopTitle" PopContent="@_1702_1703PopContent" Number1Changed="_1702AssignDoorWidth" Number2Changed="_1703AssignDoorHeight" />
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
+                        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
                     </div>
                 </div>
-                <div class="col-5 text-danger">
-                    <div><h4>g<sub>k</sub> &gt; g<sub>kкр</sub></h4></div>
-                </div>
             </div>
-        }
-        else if (__10200FireLoadRoomSurf < __10500FireLoadCrit && !Double.IsInfinity(__10200FireLoadRoomSurf) && !Double.IsInfinity(__10500FireLoadCrit))
-        {
-            <div class="row mx-1">
-                <span class="oi oi-check"></span>
-                <div class="col">
-                    <div><h4 class="text-black-50">Пожар рег. нагрузкой (ПРН)</h4></div>
+
+        </div>
+        @*//IntResultSingles*@
+        <div class="col-lg-5 col-xl-5">
+            <IntResultSingle Name="Объём" Val="@__200VolumeRoom" Units="м³" />
+            <IntResultSingle Name="Площадь поверхности" Val="@__10300Surface" Units="м²" />
+            <IntResultSingle Name="Площадь проёмов" Val="@__10400OpeningArea" Units="м²" />
+            <IntResultSingle ClassName1="text-danger" ClassName2="text-danger" Name="Удельная пож. нагр. g₀" Val="@__10100FireLoadRoomArea" Units="кг/м²" />
+            <IntResultSingle ClassName1="text-danger" ClassName2="text-danger" Name="Удельная пож. нагр. gₖ" Val="@__10200FireLoadRoomSurf" Units="кг/м²" />
+            <IntResultSingle ClassName1="text-danger" ClassName2="text-danger" Name="Критическая пож. нагр." Val="@__10500FireLoadCrit" Units="кг/м²"><HtmlContent>g<sub>kкр</sub></HtmlContent></IntResultSingle>
+            @if (__10200FireLoadRoomSurf > __10500FireLoadCrit && !Double.IsInfinity(__10200FireLoadRoomSurf) && !Double.IsInfinity(__10500FireLoadCrit))
+            {
+
+                <div class="row mx-1">
+                    <span class="oi oi-check"></span>
+                    <div class="col">
+                        <div>
+                            <h4 class="text-black-50">Пожар рег. вентиляцией (ПРВ)</h4>
+                        </div>
+                    </div>
+                    <div class="col-5 text-danger">
+                        <div><h4>g<sub>k</sub> &gt; g<sub>kкр</sub></h4></div>
+                    </div>
                 </div>
-                <div class="col-5 text-danger">
-                    <div><h4>g<sub>k</sub> &lt; g<sub>kкр</sub></h4></div>
+            }
+            else if (__10200FireLoadRoomSurf < __10500FireLoadCrit && !Double.IsInfinity(__10200FireLoadRoomSurf) && !Double.IsInfinity(__10500FireLoadCrit))
+            {
+                <div class="row mx-1">
+                    <span class="oi oi-check"></span>
+                    <div class="col">
+                        <div><h4 class="text-black-50">Пожар рег. нагрузкой (ПРН)</h4></div>
+                    </div>
+                    <div class="col-5 text-danger">
+                        <div><h4>g<sub>k</sub> &lt; g<sub>kкр</sub></h4></div>
+                    </div>
                 </div>
-            </div>
-        }
-        <IntResultSingle Name="Теплота сгорания мат." Val="@_10202HeatCombustionMaterial" Units="МДж/кг" />
-        <IntResultSingle Name="Проёмность помещения" Val="@__10600OpeningRoomVal" Units="м¹/²" />
-        <IntResultSingle Name="Кол-во воздуха для полного сгорания" Val="@__10700FlowAirCompleteCombustion" Units="м³" />
-        <IntResultSingle Name="Макс. темп-ра в помещении" Val="@__1300__1400TempRoomMaxCelsuis" Units="°C" />
-        <IntResultSingle Name="Температура дыма из помещения" Val="@__1500TempSmokeFromRoomCelsuis" Units="°C" />
-        <IntResultSingle Name="Температура дыма в коридоре" Val="@__1600TempSmokeInCorridorCelsuis" Units="°C" />
-        <IntResultSingle Name="Расход удал. дыма" Val="@__1700FlowMassSmoke" Units="кг/с" />
-        
+            }
+            <IntResultSingle Name="Теплота сгорания мат." Val="@_10202HeatCombustionMaterial" Units="МДж/кг" />
+            <IntResultSingle Name="Проёмность помещения" Val="@__10600OpeningRoomVal" Units="м¹/²" />
+            <IntResultSingle Name="Кол-во воздуха для полного сгорания" Val="@__10700FlowAirCompleteCombustion" Units="м³" />
+            <IntResultSingle Name="Макс. темп-ра в помещении" Val="@__1300__1400TempRoomMaxCelsuis" Units="°C" />
+            <IntResultSingle Name="Температура дыма из помещения" Val="@__1500TempSmokeFromRoomCelsuis" Units="°C" />
+            <IntResultSingle Name="Температура дыма в коридоре" Val="@__1600TempSmokeInCorridorCelsuis" Units="°C" />
+            <IntResultSingle Name="Расход удал. дыма" Val="@__1700FlowMassSmoke" Units="кг/с" />
+
+        </div>
     </div>
 </div>
 

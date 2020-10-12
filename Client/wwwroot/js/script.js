@@ -1,5 +1,5 @@
 ﻿window.funcs = {
-    pop: function () { $('.pop').popover() },
+    pop: function () { $('.pop').popover({trigger:'hover',placement:'auto'}) },
     selectpicker: function () { $(".selectpicker").selectpicker() },
     tooltip: function () { $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' }) },
     scrollResultDown: function () {

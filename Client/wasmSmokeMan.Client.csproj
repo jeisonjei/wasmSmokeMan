@@ -13,7 +13,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="3.2.1" PrivateAssets="all" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="radzen.blazor" Version="2.15.7" />
-    <PackageReference Include="sharpfluids" Version="2.0.29" />
     <PackageReference Include="Sve.Blazor.ChipsInput" Version="1.0.1-alpha" />
     <PackageReference Include="system.net.http.json" Version="3.2.1" />
   </ItemGroup>

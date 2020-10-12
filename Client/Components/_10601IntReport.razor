@@ -2,15 +2,28 @@
 {
     int i = 1;
     @*<div class="row"><div class="col"><span class="badge badge-secondary d-block"></span></div></div>*@
+    <table class="table small">
+        <thead class="thead-light">
+            <tr>
+                <th>Номер проёма</th>
+                <th>Площадь, м²</th>
+                <th>Высота, м</th>
+            </tr>
+        </thead>
+        <tbody>
+
     @foreach (var item in Items)
     {
-        <div class="row justify-content-start">
-            <div class="col-auto">Проём @i </div>
-            <div class="col-auto mx-0"><em>(Площадь @item.Item1 м²;</em></div>
-            <div class="col-auto mx-0"><em>Высота @item.Item2 м)</em></div>
-        </div>
+        <tr>
+            <td>@i</td>
+            <td>@item.Item1</td>
+            <td>@item.Item2</td>
+        </tr>
+        
         i++;
     }
+        </tbody>
+    </table>
     <div class="row"><div class="col"><span class="badge badge-secondary d-block"></span></div></div>
 }
 

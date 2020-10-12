@@ -1,6 +1,4 @@
-﻿using SharpFluids;
-using UnitsNet;
-
+﻿
 namespace wasmSmokeMan.Shared.NaturalPhenomenaIndependent
 {
     public class Climate

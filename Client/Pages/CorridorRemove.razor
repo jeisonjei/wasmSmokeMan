@@ -33,8 +33,8 @@
 
                             <InpGroup Label="@_1702_1703FieldName" PopTitle="@PopTitle" PopContent="@_1702_1703PopContent" Number1Changed="_1702AssignDoorWidth" Number2Changed="_1703AssignDoorHeight" />
                         </div>
-                        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
-                        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
+                        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab"><em>В разработке...</em></div>
+                        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">В разработке...</div>
                     </div>
                 </div>
             </div>
@@ -51,29 +51,11 @@
             @if (__10200FireLoadRoomSurf > __10500FireLoadCrit && !Double.IsInfinity(__10200FireLoadRoomSurf) && !Double.IsInfinity(__10500FireLoadCrit))
             {
 
-                <div class="row mx-1">
-                    <span class="oi oi-check"></span>
-                    <div class="col">
-                        <div>
-                            <h4 class="text-black-50">Пожар рег. вентиляцией (ПРВ)</h4>
-                        </div>
-                    </div>
-                    <div class="col-5 text-danger">
-                        <div><h4>g<sub>k</sub> &gt; g<sub>kкр</sub></h4></div>
-                    </div>
-                </div>
+                <IntResultSingle Name="Пожар рег. вентиляцией (ПРВ)"></IntResultSingle>
             }
             else if (__10200FireLoadRoomSurf < __10500FireLoadCrit && !Double.IsInfinity(__10200FireLoadRoomSurf) && !Double.IsInfinity(__10500FireLoadCrit))
             {
-                <div class="row mx-1">
-                    <span class="oi oi-check"></span>
-                    <div class="col">
-                        <div><h4 class="text-black-50">Пожар рег. нагрузкой (ПРН)</h4></div>
-                    </div>
-                    <div class="col-5 text-danger">
-                        <div><h4>g<sub>k</sub> &lt; g<sub>kкр</sub></h4></div>
-                    </div>
-                </div>
+                <IntResultSingle Name="Пожар рег. нагрузкой (ПРН)"></IntResultSingle>
             }
             <IntResultSingle Name="Теплота сгорания мат." Val="@_10202HeatCombustionMaterial" Units="МДж/кг" />
             <IntResultSingle Name="Проёмность помещения" Val="@__10600OpeningRoomVal" Units="м¹/²" />
@@ -89,6 +71,7 @@
 
 @inject IJSRuntime js
 @using System.Text
+@inject IMatToaster toast
 @*//code*@
 @code{
     public bool _10601Show { get; set; }
@@ -295,26 +278,34 @@
 
     void _10601AssignOpeningArea()
     {
-        //если при вызове метода в поле ничего нет, то ничего не происходит, просто коллекция очищается
-        if (_10601Chips.Count == 0)
+        try
         {
-            _10601List.Clear();
-        }
-        //в этом блоке при каждом добавлении или удалении элемента в коллекцию _10601List добавляются и обрабатываются все элементы из коллекции _10601Chips
-        //то есть строка разделяется по разделителю ; затем преобразуется в double и для элемента Item1 кортежа вычисляется площадь путём перемножения того, что было до знака ; и того, что было после этого знака
-        else
-        {
-
-            _10601List.Clear();
-            foreach (var item in _10601Chips)
+            //если при вызове метода в поле ничего нет, то ничего не происходит, просто коллекция очищается
+            if (_10601Chips.Count == 0)
             {
-                _10601List.Add((Convert.ToDouble(item.Split(';')[0]) * Convert.ToDouble(item.Split(';')[1]), Convert.ToDouble(item.Split(';')[1])));
+                _10601List.Clear();
+            }
+            //в этом блоке при каждом добавлении или удалении элемента в коллекцию _10601List добавляются и обрабатываются все элементы из коллекции _10601Chips
+            //то есть строка разделяется по разделителю ; затем преобразуется в double и для элемента Item1 кортежа вычисляется площадь путём перемножения того, что было до знака ; и того, что было после этого знака
+            else
+            {
+
+                _10601List.Clear();
+                foreach (var item in _10601Chips)
+                {
+                    _10601List.Add((Convert.ToDouble(item.Split(';')[0]) * Convert.ToDouble(item.Split(';')[1]), Convert.ToDouble(item.Split(';')[1])));
+
+                }
 
             }
-
+            //здесь вычисляется сумма площадей проёмов для формулы 4 в приложении 1
+            __10400OpeningArea = _10601List.Sum(x => x.Item1);
         }
-        //здесь вычисляется сумма площадей проёмов для формулы 4 в приложении 1
-        __10400OpeningArea = _10601List.Sum(x => x.Item1);
+        catch (Exception ex)
+        {
+
+            toast.Add(ex.Message, MatToastType.Danger);
+        }
         //затем вызывается метод для вычисления приведённой пожарной нагрузки (формула 2 в приложении 1)
         CompAll();
     }

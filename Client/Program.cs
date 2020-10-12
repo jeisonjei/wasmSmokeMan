@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 using wasmSmokeMan.Shared.NaturalPhenomenaIndependent;
 using wasmSmokeMan.Shared.SemanticObjects;
 using wasmSmokeMan.Shared.SimpleObjects;
-using UnitsNet;
 using wasmSmokeMan.Shared.NaturalPhenomenaDependent;
 using wasmSmokeMan.Shared.CompoundObjects;
 using wasmSmokeMan.Shared.Functions;
@@ -48,8 +47,8 @@ namespace wasmSmokeMan.Client
                 config.PreventDuplicates = true;
                 config.NewestOnTop = true;
                 config.ShowCloseButton = true;
-                config.MaximumOpacity = 95;
-                config.VisibleStateDuration = 3000;
+                config.MaximumOpacity = 100;
+                config.VisibleStateDuration = 4000;
             });
             await builder.Build().RunAsync();
         }

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace wasmSmokeMan.Shared.Functions
+namespace wasmSmokeMan.Shared.SupplyStaircase.Functions
 {
     public class F106
     {

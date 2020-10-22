@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using wasmSmokeMan.Shared.CompoundObjects;
-using wasmSmokeMan.Shared.NaturalPhenomenaDependent;
-using wasmSmokeMan.Shared.NaturalPhenomenaIndependent;
-using wasmSmokeMan.Shared.SemanticObjects;
-using wasmSmokeMan.Shared.SimpleObjects;
 
-namespace wasmSmokeMan.Shared.SemanticObjects
+namespace wasmSmokeMan.Shared.SupplyStaircase.SemanticObjects
 {
     //пока что нет возможности задания отметки надземного этажа (например если ЛК начинается на 2-ом этаже и отметка этого этажа отлична от 0). При необходимости добавить
     public class Floors

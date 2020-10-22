@@ -7,13 +7,13 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using wasmSmokeMan.Shared.NaturalPhenomenaIndependent;
-using wasmSmokeMan.Shared.SemanticObjects;
-using wasmSmokeMan.Shared.SimpleObjects;
-using wasmSmokeMan.Shared.NaturalPhenomenaDependent;
-using wasmSmokeMan.Shared.CompoundObjects;
-using wasmSmokeMan.Shared.Functions;
 using MatBlazor;
+using wasmSmokeMan.Shared.SupplyStaircase.CompoundObjects;
+using wasmSmokeMan.Shared.SupplyStaircase.Functions;
+using wasmSmokeMan.Shared.SupplyStaircase.NaturalPhenomenaDependent;
+using wasmSmokeMan.Shared.SupplyStaircase.NaturalPhenomenaIndependent;
+using wasmSmokeMan.Shared.SupplyStaircase.SemanticObjects;
+using wasmSmokeMan.Shared.SupplyStaircase.SimpleObjects;
 
 namespace wasmSmokeMan.Client
 {

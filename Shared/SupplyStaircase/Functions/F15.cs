@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace wasmSmokeMan.Shared.Functions
+﻿namespace wasmSmokeMan.Shared.SupplyStaircase.Functions
 {
     public class F15
     {

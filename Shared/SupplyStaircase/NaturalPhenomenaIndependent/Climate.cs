@@ -1,5 +1,5 @@
 ﻿
-namespace wasmSmokeMan.Shared.NaturalPhenomenaIndependent
+namespace wasmSmokeMan.Shared.SupplyStaircase.NaturalPhenomenaIndependent
 {
     public class Climate
     {

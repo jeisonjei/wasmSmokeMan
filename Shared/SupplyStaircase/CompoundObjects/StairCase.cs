@@ -1,12 +1,7 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using wasmSmokeMan.Shared.CompoundObjects;
-using wasmSmokeMan.Shared.NaturalPhenomenaDependent;
-using wasmSmokeMan.Shared.NaturalPhenomenaIndependent;
-using wasmSmokeMan.Shared.SemanticObjects;
-using wasmSmokeMan.Shared.SimpleObjects;
+﻿using wasmSmokeMan.Shared.SupplyStaircase.SemanticObjects;
+using wasmSmokeMan.Shared.SupplyStaircase.SimpleObjects;
 
-namespace wasmSmokeMan.Shared.CompoundObjects
+namespace wasmSmokeMan.Shared.SupplyStaircase.CompoundObjects
 {
     public class StairCase
     {

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using wasmSmokeMan.Shared.CompoundObjects;
-using wasmSmokeMan.Shared.NaturalPhenomenaDependent;
-using wasmSmokeMan.Shared.NaturalPhenomenaIndependent;
-using wasmSmokeMan.Shared.SemanticObjects;
-using wasmSmokeMan.Shared.SimpleObjects;
-namespace wasmSmokeMan.Shared.Functions
+using wasmSmokeMan.Shared.SupplyStaircase.CompoundObjects;
+using wasmSmokeMan.Shared.SupplyStaircase.NaturalPhenomenaIndependent;
+
+namespace wasmSmokeMan.Shared.SupplyStaircase.Functions
 {
     public class MethodsSupplyStair
     {

@@ -8,4 +8,55 @@
     <PackageReference Include="system.text.json" Version="4.7.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Include="..\..\consoleRemHall\CompoundObjects\Hall.cs">
+      <Link>RemoveHall\CompoundObjects\Hall.cs</Link>
+    </Compile>
+    <Compile Include="..\..\consoleRemHall\CompoundObjects\NetPart.cs">
+      <Link>RemoveHall\CompoundObjects\NetPart.cs</Link>
+    </Compile>
+    <Compile Include="..\..\consoleRemHall\CompoundObjects\Room.cs">
+      <Link>RemoveHall\CompoundObjects\Room.cs</Link>
+    </Compile>
+    <Compile Include="..\..\consoleRemHall\CompoundObjects\SysPart.cs">
+      <Link>RemoveHall\CompoundObjects\SysPart.cs</Link>
+    </Compile>
+    <Compile Include="..\..\consoleRemHall\NaturalPhenomenaDependent\Fluid.cs">
+      <Link>RemoveHall\NaturalPhenomenaDependent\Fluid.cs</Link>
+    </Compile>
+    <Compile Include="..\..\consoleRemHall\NaturalPhenomenaIndependent\Climate.cs">
+      <Link>RemoveHall\NaturalPhenomenaIndependent\Climate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\consoleRemHall\SemanticObjects\-.cs">
+      <Link>RemoveHall\SemanticObjects\-.cs</Link>
+    </Compile>
+    <Compile Include="..\..\consoleRemHall\SemanticObjects\Floor.cs">
+      <Link>RemoveHall\SemanticObjects\Floor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\consoleRemHall\SemanticObjects\INetwork.cs">
+      <Link>RemoveHall\SemanticObjects\INetwork.cs</Link>
+    </Compile>
+    <Compile Include="..\..\consoleRemHall\SemanticObjects\Network.cs">
+      <Link>RemoveHall\SemanticObjects\Network.cs</Link>
+    </Compile>
+    <Compile Include="..\..\consoleRemHall\SimpleObjects\DoorHall.cs">
+      <Link>RemoveHall\SimpleObjects\DoorHall.cs</Link>
+    </Compile>
+    <Compile Include="..\..\consoleRemHall\SimpleObjects\DoorRoom.cs">
+      <Link>RemoveHall\SimpleObjects\DoorRoom.cs</Link>
+    </Compile>
+    <Compile Include="..\..\consoleRemHall\SimpleObjects\Duct.cs">
+      <Link>RemoveHall\SimpleObjects\Duct.cs</Link>
+    </Compile>
+    <Compile Include="..\..\consoleRemHall\SimpleObjects\Opening.cs">
+      <Link>RemoveHall\SimpleObjects\Opening.cs</Link>
+    </Compile>
+    <Compile Include="..\..\consoleRemHall\SimpleObjects\Window.cs">
+      <Link>RemoveHall\SimpleObjects\Window.cs</Link>
+    </Compile>
+    <Compile Include="..\..\consoleRemHall\Support\Converter.cs">
+      <Link>RemoveHall\Support\Converter.cs</Link>
+    </Compile>
+  </ItemGroup>
+
 </Project>

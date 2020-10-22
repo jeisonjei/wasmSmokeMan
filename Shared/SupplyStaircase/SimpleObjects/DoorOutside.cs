@@ -1,10 +1,4 @@
-﻿using wasmSmokeMan.Shared.CompoundObjects;
-using wasmSmokeMan.Shared.NaturalPhenomenaDependent;
-using wasmSmokeMan.Shared.NaturalPhenomenaIndependent;
-using wasmSmokeMan.Shared.SemanticObjects;
-using wasmSmokeMan.Shared.SimpleObjects;
-
-namespace wasmSmokeMan.Shared.SimpleObjects
+﻿namespace wasmSmokeMan.Shared.SupplyStaircase.SimpleObjects
 {
     public class DoorOutside
     {

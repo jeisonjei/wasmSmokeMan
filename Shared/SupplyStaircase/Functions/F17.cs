@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace wasmSmokeMan.Shared.Functions
+namespace wasmSmokeMan.Shared.SupplyStaircase.Functions
 {
     //формула 17 - массовый расход удаляемого дыма из коридора
     public class F17

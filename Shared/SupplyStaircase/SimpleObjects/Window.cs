@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using wasmSmokeMan.Shared.NaturalPhenomenaDependent;
-using wasmSmokeMan.Shared.NaturalPhenomenaIndependent;
+using wasmSmokeMan.Shared.SupplyStaircase.NaturalPhenomenaDependent;
+using wasmSmokeMan.Shared.SupplyStaircase.NaturalPhenomenaIndependent;
 
-namespace wasmSmokeMan.Shared.SimpleObjects
+namespace wasmSmokeMan.Shared.SupplyStaircase.SimpleObjects
 {
     public class Window
     {

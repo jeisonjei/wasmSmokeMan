@@ -1,12 +1,9 @@
 ﻿using System;
-using wasmSmokeMan.Shared.CompoundObjects;
-using wasmSmokeMan.Shared.NaturalPhenomenaDependent;
-using wasmSmokeMan.Shared.NaturalPhenomenaIndependent;
-using wasmSmokeMan.Shared.SemanticObjects;
-using wasmSmokeMan.Shared.SimpleObjects;
+using wasmSmokeMan.Shared.SupplyStaircase.CompoundObjects;
+using wasmSmokeMan.Shared.SupplyStaircase.NaturalPhenomenaIndependent;
+using wasmSmokeMan.Shared.SupplyStaircase.SemanticObjects;
 
-
-namespace wasmSmokeMan.Shared.NaturalPhenomenaDependent
+namespace wasmSmokeMan.Shared.SupplyStaircase.NaturalPhenomenaDependent
 {
     public class Pressures
     {

@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
-using wasmSmokeMan.Shared.CompoundObjects;
-using wasmSmokeMan.Shared.NaturalPhenomenaDependent;
-using wasmSmokeMan.Shared.NaturalPhenomenaIndependent;
-using wasmSmokeMan.Shared.SemanticObjects;
-using wasmSmokeMan.Shared.SimpleObjects;
-
-namespace wasmSmokeMan.Shared.NaturalPhenomenaIndependent
+﻿namespace wasmSmokeMan.Shared.SupplyStaircase.NaturalPhenomenaIndependent
 {
     public class AirProps
     {

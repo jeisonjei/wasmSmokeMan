@@ -52,15 +52,15 @@
                             <Sel Label="@_211StaircasePortalTypeFN" PopTitle="@PopTitle" PopContent="@_211StaircasePoprtalTypePC" Items="@starecasePortalTypes" NumberChanged="@_211AStaircasePortalType"></Sel>
                             <InpSingle Label="@_204FirstFloorFN" PopTitle="@PopTitle" PopContent="@_204FirstFloorPC" NumberChanged="@_204AFirstFloor"></InpSingle>
                             <InpSingle Label="@_203QuFloorsFN" PopTitle="@PopTitle" PopContent="@_203QuFloorsPC" NumberChanged="@_203AQuFloors"></InpSingle>
-                            <ChipsInput Label="@_205ChipsFN" PopTitle="@PopTitle" PopContent="@_205ChipsPC" Chips="@_205Chips" ShowInputOutline="true" EnableBackspaceRemove="true" OnChipsChanged="_205AFloorLevels" OnFocus="_205ShowToggle" OnFocusOut="_205HideToggle"></ChipsInput>
-                            <IntReportSortedList Show="@_205Show" Items="@fl.Levels"></IntReportSortedList>
+                            <ChipsInputStaircaseSupply Label="@_205ChipsFN" PopTitle="@PopTitle" PopContent="@_205ChipsPC" Chips="@_205Chips" ShowInputOutline="true" EnableBackspaceRemove="true" OnChipsChanged="_205AFloorLevels" OnFocus="_205ShowToggle" OnFocusOut="_205HideToggle"></ChipsInputStaircaseSupply>
+                            <IntReportTableFloors Show="@_205Show" Items="@fl.Levels"></IntReportTableFloors>
                         </div>
                         @*двери и окна*@
                         <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
                             <InpGroup Label="@_206DoorOutsideFN" PopTitle="@PopTitle" PopContent="@_206DoorOutsidePC" Number1Changed="@_206ADoorOutsideWidth" Number2Changed="@_206ADoorOutsideHeight"></InpGroup>
                             <InpGroup Label="@_207DoorInsideFN" PopTitle="@PopTitle" PopContent="@_207DoorInsidePC" Number1Changed="@_207ADoorInsideWidth" Number2Changed="@_207ADoorInsideHeight"></InpGroup>
 
-                            <div class="form-group" style="margin-bottom: 16;">
+                            <div class="form-group" style="margin-bottom: 16px;">
                                 <div class="row justify-content-between">
                                     <div class="col"><label class="col-form-label">@_213DoorInsideTypeFN</label></div>
                                     <div class="col col-1 d-flex align-items-center justify-content-end">
@@ -93,22 +93,22 @@
             </div>
         </div>
         <div @attributes="@resultsAttr" class="col-lg-5 col-xl-5 overflow-auto" style="height:85vh">
-            <IntResultSingle Name="Температура наружного воздуха" Val="@Math.Round(cl.TempOutside,2)"></IntResultSingle>
-            <IntResultSingle Name="Температура внутреннего воздуха" Val="@Math.Round(cl.TempInside,2)"></IntResultSingle>
-            <IntResultSingle Name="Температура приточного воздуха" Val="@Math.Round(cl.TempSupply,2)"></IntResultSingle>
-            <IntResultSingle Name="Плотность наружного воздуха" Val="@Math.Round(cl.DensityOutside,2)"></IntResultSingle>
-            <IntResultSingle Name="Плотность внутреннего воздуха" Val="@Math.Round(cl.DensityInside,2)"></IntResultSingle>
-            <IntResultSingle Name="Плотность приточного воздуха" Val="@Math.Round(cl.DensitySupply,3)" Units="кг/м³"></IntResultSingle>
-            <IntResultSingle Name="Первый этаж" Val="@fl.First" />
-            <IntResultSingle Name="Количество этажей" Val="@fl.Qu" />
+            <IntResultSingleDouble Name="Температура наружного воздуха" Val="@Math.Round(cl.TempOutside,2)"></IntResultSingleDouble>
+            <IntResultSingleDouble Name="Температура внутреннего воздуха" Val="@Math.Round(cl.TempInside,2)"></IntResultSingleDouble>
+            <IntResultSingleDouble Name="Температура приточного воздуха" Val="@Math.Round(cl.TempSupply,2)"></IntResultSingleDouble>
+            <IntResultSingleDouble Name="Плотность наружного воздуха" Val="@Math.Round(cl.DensityOutside,2)"></IntResultSingleDouble>
+            <IntResultSingleDouble Name="Плотность внутреннего воздуха" Val="@Math.Round(cl.DensityInside,2)"></IntResultSingleDouble>
+            <IntResultSingleDouble Name="Плотность приточного воздуха" Val="@Math.Round(cl.DensitySupply,3)" Units="кг/м³"></IntResultSingleDouble>
+            <IntResultSingleDouble Name="Первый этаж" Val="@fl.First" />
+            <IntResultSingleDouble Name="Количество этажей" Val="@fl.Qu" />
             <IntResultGroup Name="Наружная дверь" Val1="@dro.Width" Val2="@dro.Height" Units="м"></IntResultGroup>
             <IntResultGroup Name="Внутренняя дверь" Val1="@dri.Width" Val2="@dri.Height" Units="м"></IntResultGroup>
-            <IntResultSingle Name="Сопротивление дымопроницанию двери" Val="@Math.Round(dri.SmokeResistance,0)" Units="м³/кг"></IntResultSingle>
+            <IntResultSingleDouble Name="Сопротивление дымопроницанию двери" Val="@Math.Round(dri.SmokeResistance,0)" Units="м³/кг"></IntResultSingleDouble>
             <IntResultGroup Name="Окна на этажах ЛК" Val1="@w.Width" Val2="@w.Height" Units="м"></IntResultGroup>
-            <IntResultSingle Name="Давление снаружи" Val="@Math.Round(p.OutsideDeltaPMax,1)" Units="Па"></IntResultSingle>
-            <IntResultSingle Name="Площадь ЛК" Val="@st.Area" Units="м²"></IntResultSingle>
-            <IntResultSingle Name="Количество дверей ЛК" Val="@st.QuDoorOutside"></IntResultSingle>
-            <IntResultSingle Name="Тип тамбура ЛК" Val="@st.KsiR"></IntResultSingle>
+            <IntResultSingleDouble Name="Давление снаружи" Val="@Math.Round(p.OutsideDeltaPMax,1)" Units="Па"></IntResultSingleDouble>
+            <IntResultSingleDouble Name="Площадь ЛК" Val="@st.Area" Units="м²"></IntResultSingleDouble>
+            <IntResultSingleDouble Name="Количество дверей ЛК" Val="@st.QuDoorOutside"></IntResultSingleDouble>
+            <IntResultSingleDouble Name="Тип тамбура ЛК" Val="@st.KsiR"></IntResultSingleDouble>
             <table id="table" class="table">
                 <thead class="thead-light">
                     <tr>
@@ -128,23 +128,11 @@
                 </tbody>
 
             </table>
-            @*для проверки*@
-            @*<IntResultSingle Name="Температура наружн." Val="@m.Climate.TempOutside"></IntResultSingle>
-            <IntResultSingle Name="Температура внутр." Val="@m.Climate.TempInside"></IntResultSingle>
-            <IntResultGroup Name="Дверь нар." Val1="@m.Stair.DoorOutside.Width" Val2="@m.Stair.DoorOutside.Height"></IntResultGroup>
-            <IntResultGroup Name="Дверь внутр." Val1="@m.Stair.DoorInside.Width" Val2="@m.Stair.DoorInside.Height"></IntResultGroup>
-            <IntResultGroup Name="Окно" Val1="@m.Stair.Window.Width" Val2="@m.Stair.Window.Height"></IntResultGroup>
-            <IntResultSingle Name="Окно воздухопрониц." Val="@m.Stair.Window.BreathabilityGn"></IntResultSingle>
-            <IntResultSingle Name="Окно сопротивл." Val="@Math.Round(m.Stair.Window.AirResistanceRn,2)"></IntResultSingle>
-            <IntResultSingle Name="Давление снаружи" Val="@Math.Round(m.Stair.Window.Pressures.OutsideDeltaPMax)"></IntResultSingle>
-            <IntResultSingle Name="Высота здания" Val="@m.Stair.Floors.HeightFromFirstToTopOfTheShaft"></IntResultSingle>
-            <IntResultSingle Name="Pwind" Val="@(Math.Round(m.Pwind,2))"></IntResultSingle>
-            <IntResultSingle Name="Gsa" Val="@Math.Round(m.Gsa_24,2)"></IntResultSingle>
-            <IntResultSingle Name="Ps2" Val="@Math.Round(m.Ps2_23,2)"></IntResultSingle>*@
+            
 
 
             @*---*@
-            <IntResultSingle Name="Производительность вентилятора" Val="@(Math.Round(m.Lv))" Units="м³/ч"></IntResultSingle>
+            <IntResultSingleDouble Name="Производительность вентилятора" Val="@(Math.Round(m.Lv))" Units="м³/ч"></IntResultSingleDouble>
 
         </div>
     </div>
@@ -231,7 +219,7 @@
     {
         await js.InvokeVoidAsync("funcs.pop");
         await js.InvokeVoidAsync("funcs.selectpicker");
-        await js.InvokeVoidAsync("funcs.tooltip");
+        await js.InvokeVoidAsync("funcs.tooltipGeneral");
         RenderComplete = 1;
 
     }

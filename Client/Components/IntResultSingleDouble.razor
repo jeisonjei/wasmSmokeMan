@@ -1,10 +1,10 @@
 ﻿<div class="row @ClassName1 mx-1 justify-content-between">
     <span class="oi oi-check"></span>
     <div class="col-7">
-        <h4 class="text-black-50">@Name <span>@HtmlContent</span></h4>
+        <h4 class="text-black-50">@Name <span>@HtmlName</span></h4>
     </div>
     <div class="col-4">
-        <h4 class="@ClassName2">@Val @Units</h4>
+        <h4 class="@ClassName2">@Val @Units <span>@HtmlUnits</span></h4>
     </div>
 </div>
 
@@ -20,5 +20,7 @@
     [Parameter]
     public string ClassName2 { get; set; }
     [Parameter]
-    public RenderFragment HtmlContent { get; set; }
+    public RenderFragment HtmlName { get; set; }
+    [Parameter]
+    public RenderFragment HtmlUnits { get; set; }
 }

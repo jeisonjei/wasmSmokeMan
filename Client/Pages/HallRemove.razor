@@ -1,0 +1,673 @@
+﻿@page "/hallremove"
+<div class="container-fluid">
+    <h2 class="text-center">Удаление дыма из коридоров</h2>
+    <hr class="my-2"/>
+    <div class="row">
+        <div class="col">
+            @* <h4>Room</h4> *@
+            @* <p>@Room.ToJson()</p> *@
+            @* <hr/> *@
+            @* <h4>Hall</h4> *@
+            @* <p>@Hall.ToJson()</p> *@
+            @* <hr/> *@
+            @* <h4>Network</h4> *@
+            @* <p>@Network.ToJson()</p> *@
+            @* <hr/> *@
+            @* <h4>Result</h4> *@
+            @* <p>@Result.ToJson()</p> *@
+            @* <hr/> *@
+            @* <h4>Comparer</h4> *@
+            @* <p>COMPARER : @comparer</p> *@
+            <hr/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-lg-3 col-xl-3">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Помещение и материалы</a>
+                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Коридор и дверь</a>
+                <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Этажи и сеть воздуховодов</a>
+                <div class="mt-2">
+                    <button class="btn btn-outline-danger btn-lg" @onclick="AssignShowResult">Расчёт</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 col-lg-4 col-xl-4 overflow-auto" style="height:85vh">
+            <div class="row">
+                <div class="col">
+                    <div class="tab-content" id="v-pills-tabContent">
+                        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                            @*inputs*@
+                            <InpSingle Label="@_10301_1FieldName" PopTitle="@PopTitle" PopContent="@_10301_1PopContent" NumberChanged="@_10301_1AssignRoomArea"/>
+                            <InpSingle Label="@_10301_2FieldName" PopTitle="@PopTitle" PopContent="@_10301_2PopContent" NumberChanged="@_10301_2AssignRoomHeight"/>
+                            <ChipsInputHallRemove Label="@_10601FieldName" PopTitle="@PopTitle" PopContent="@_10601PopContent" Chips="@_10601Chips" ShowInputOutline="true" EnableBackspaceRemove="true" OnChipsAdded="_10601AssignOpeningArea" OnFocus="ShowToggleOpenings" OnFocusOut="HideToggleOpenings"></ChipsInputHallRemove>
+                            <_10601IntReport Items="@Room.Openings" Show="@ShowOpenings"></_10601IntReport>
+                            <InpSingle Label="@_1301FieldName" PopTitle="@PopTitle" PopContent="@_1301PopContent" PopRef="@_1301PopRef" PopLinkText="@_1301PopLink" PopLinkUri="@_1301PopUri" NumberChanged="_1301AssignTempRoomCelsuis"/>
+                            <InpSingle Label="@_10201FieldName" PopTitle="@PopTitle" PopContent="@_10201PopContent" NumberChanged="@_10201AssignMassMaterial"/>
+                            <Sel Label="@_10202FieldName" Items="@_10202Items" PopTitle="@PopTitle" PopContent="@_10202PopContent" PopRef="@_10202PopRef" NumberChanged="_10202AssignHeatCombustionMaterial" PopLinkUri="https://rb.gy/dqo5nq" PopLinkText="Теплота сгорания"></Sel>
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                            <InpSingle Label="@_1605AreaCorridorFieldName" PopTitle="@PopTitle" PopContent="@_1605AreaCorridorPopContent" NumberChanged="_1605AssignAreaCorridor"/>
+                            <InpSingle Label="@_1606LengthCorridorFieldName" PopTitle="@PopTitle" PopContent="@_1606LengthCorridorPopContent" NumberChanged="_1606AssignLengthCorridor"/>
+                            <InpSingle Label="@_1604_1HeightCorridorFieldName" PopTitle="@PopTitle" PopContent="@_1604_1HeightCorridorPopContent" NumberChanged="_1604_1AssignHeightCorridor"/>
+                            <div class="form-group" style="margin-bottom: 16px;">
+                                                            <div class="row justify-content-between">
+                                                                <div class="col"><label class="col-form-label">Тип здания</label></div>
+                                                                <div class="col col-1 d-flex align-items-center justify-content-end">
+                                                                    <a class="pop" tabindex="-1" href="#" data-toggle="popover" title="@PopTitle" data-content="@BuildingTypePC" data-html="true" @onclick:preventDefault="true"><span class="fas fa-question-circle px-0 py-0" style="border-color: rgb(45,140,241);"></span></a>
+                            
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <RadzenSelectBar TValue="int" @bind-Value="@BuildingType" Change="AssignBuildingType">
+                                                                        <Items>
+                                                                            <RadzenSelectBarItem Attributes="@BuildingTypeAttr1" Text="ЖИЛ" Value="1"></RadzenSelectBarItem>
+                                                                            <RadzenSelectBarItem Attributes="@BuildingTypeAttr2" Text="ОБЩ" Value="2"></RadzenSelectBarItem>
+                                                                            
+                                                                        </Items>
+                                                                    </RadzenSelectBar>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                            <InpGroup Label="@_1702_1703FieldName" PopTitle="@PopTitle" PopContent="@_1702_1703PopContent" Number1Changed="_1702AssignDoorWidth" Number2Changed="_1703AssignDoorHeight"/>
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                            <InpSingle Label="@_204FirstFloorFN" PopTitle="@PopTitle" PopContent="@_204FirstFloorPC" NumberChanged="@AssignFirstFloor"></InpSingle>
+                            <InpSingle Label="@_203QuFloorsFN" PopTitle="@PopTitle" PopContent="@_203QuFloorsPC" NumberChanged="@AssignQuFloors"></InpSingle>
+                            <ChipsInputHallRemove DivAttributes="@chipsNetworkAttributes" Chips="@ChipsNetwork" Label="@NetworkFieldName" PopTitle="@PopTitle" PopContent="@NetworkPopContent" OnChipsAdded="AddToNetwork" OnChipsRemove="RemoveFromNetwork"></ChipsInputHallRemove>
+                            <IntReportTableNetwork Show="@true" System="@Network.System"></IntReportTableNetwork>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        @*//IntResultSingleDoubles*@
+        <div @attributes="@resultsAttr" class="col-lg-5 col-xl-5 mt-xl-3 overflow-auto" style="height:85vh">
+            <IntResultSingleDouble Name="Первый этаж" Val="@Network.First"></IntResultSingleDouble>
+            <IntResultSingleDouble Name="Количество этажей" Val="@Network.Qu"></IntResultSingleDouble>
+            <IntResultSingleDouble Name="Объём" Val="@Room.Volume.RoundTo1()" Units="м³"/>
+            <IntResultSingleDouble Name="Площадь поверхности" Val="@Room.Surface.RoundTo1()" Units="м²"/>
+            <IntResultSingleDouble Name="Площадь проёмов" Val="@Room.OpeningAreaSum.RoundTo2()" Units="м²"/>
+            <IntResultSingleDouble ClassName1="text-danger" ClassName2="text-danger" Name="Удельная пож. нагр. к площади" Val="@Room.g0.RoundTo2()" Units="кг/м²">
+                <HtmlName>g<sub>0</sub></HtmlName>
+            </IntResultSingleDouble>
+            <IntResultSingleDouble ClassName1="text-danger" ClassName2="text-danger" Name="Удельная пож. нагр. к поверхности" Val="@Room.gk.RoundTo2()" Units="кг/м²">
+                <HtmlName>g<sub>k</sub></HtmlName>
+            </IntResultSingleDouble>
+            <IntResultSingleDouble ClassName1="text-danger" ClassName2="text-danger" Name="Критическая пож. нагр." Val="@Room.gcrit.RoundTo2()" Units="кг/м²">
+                <HtmlName>g<sub>crit</sub></HtmlName>
+            </IntResultSingleDouble>
+            @if (Room.gk > Room.gcrit && !Double.IsInfinity(Room.gk) && !Double.IsInfinity(Room.gcrit))
+            {
+                <IntResultSingleString Name="Пожар рег. вентиляцией (ПРВ)">
+                    <HtmlValue>g<sub>k</sub> &gt; g<sub>crit</sub></HtmlValue>
+                </IntResultSingleString>
+            }
+            else if (Room.gk < Room.gcrit && !Double.IsInfinity(Room.gk) && !Double.IsInfinity(Room.gcrit))
+            {
+                <IntResultSingleString Name="Пожар рег. нагрузкой (ПРН)">
+                    <HtmlValue>g<sub>k</sub> &lt; g<sub>crit</sub></HtmlValue>
+                </IntResultSingleString>
+            }
+            <IntResultSingleDouble Name="Теплота сгорания мат." Val="@Room.MaterialHeatCombustion.RoundTo2()" Units="МДж/кг"/>
+            <IntResultSingleDouble Name="Проёмность помещения" Val="@Room.OpeningRoomVal.RoundTo2()">
+                <HtmlUnits>м<sup class="small">1/2</sup></HtmlUnits>
+            </IntResultSingleDouble>
+            <IntResultSingleDouble Name="Кол-во воздуха для полного сгорания" Val="@Room.FlowAirCompleteCombustion.RoundTo2()" Units="м³"/>
+            <IntResultSingleDouble Name="Макс. темп-ра в помещении" Val="@Room.T0max.RoundTo1().ToCelsius()" Units="°C"/>
+            <IntResultSingleDouble Name="Температура дыма из помещения" Val="@Room.T0.RoundTo1().ToCelsius()" Units="°C"/>
+            <IntResultSingleDouble Name="Температура дыма в коридоре" Val="@Hall.Tsm.RoundTo1().ToCelsius()" Units="°C"/>
+            <IntResultSingleDouble Name="Расход удал. дыма" Val="@Hall.Gsm.RoundTo3()" Units="кг/с"/>
+            @if (ShowResult)
+            {
+                <table class="table small mt-2 nopadding align-items-center">
+                    <thead class="thead-light">
+                    <tr>
+                        <th>№</th>
+                        <th>Отм.</th>
+                        <th>Возд.</th>
+                        <th>Fжс кл.</th>
+                        <th>Gda</th>
+                        <th>Gdpa</th>
+                        <th>G2</th>
+                        
+                        <th>Tsm</th>
+                        <th>ρ</th>
+                        <th>v</th>
+
+                        <th>P</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    @foreach (var part in Result.System.Values)
+                    {
+                        <tr>
+                            <td>@part.Floor.Index</td>
+                            <td>@part.Floor.Level.RoundTo2()</td>
+                            <td>@part.NetPart.Duct.Width.RoundTo0() x @part.NetPart.Duct.Height.RoundTo0()</td>
+                            @if (@part.NetPart.Valve != null)
+                            {
+                                <td>@part.NetPart.Valve.Area</td>
+                            }
+                            else
+                            {
+                                <td>-</td>
+                            }
+                            <td>@part.NetPart.Gda.RoundTo3()</td>
+                            <td>@part.NetPart.Gdpa.RoundTo3()</td>
+                            <td>@part.NetPart.FlowEnd.RoundTo3()</td>
+                            <td>@part.NetPart.Fluid.TempCels.RoundTo0()</td>
+                            <td>@part.NetPart.Fluid.Density.RoundTo2()</td>
+                            <td>@part.NetPart.Velocity.RoundTo2()</td>
+
+                            <td>@part.NetPart.PressureEnd.RoundTo0()</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+                <div>
+                    <span class="badge badge-secondary d-block"></span>
+                </div>
+                <p class="small">
+                    <em>* значения указаны для конца участка на каждом этаже, то есть на уровне потолка данного этажа</em>
+                </p>
+                <p class="small">
+                    <em>* если нужно учесть сопротивление воздуховодов и элементов сети, располагающихся на кровле здания, нужно к участку последнего этажа указать длину воздуховодов кровли и суммарный КМС элементов этого участка (участка кровли)</em>
+                </p>
+                <IntResultSingleDouble Name="Производительность вентилятора" Val="Network.Lv.RoundTo0()" Units="м³/ч"></IntResultSingleDouble>
+                <IntResultSingleDouble Name="Давление вентилятора, приведённое к стандартным условиям" Val="Network.Psv.RoundTo0()" Units="Па"></IntResultSingleDouble>
+            }
+
+        </div>
+    </div>
+</div>
+
+@inject IJSRuntime Js
+@using System.Text
+@using wasmSmokeMan.Shared.RemoveHall
+@using wasmSmokeMan.Shared.SupplyStaircase.Functions
+@inject IMatToaster Toast
+@inject Climate Climate;
+@inject Opening Opening;
+@inject Room Room;
+@inject Hall Hall;
+@inject Network Network;
+@*//code*@
+
+@code{
+    Dictionary<string, object> chipsNetworkAttributes;
+    Dictionary<string, object> resultsAttr;
+
+    protected override void OnInitialized()
+    {
+        chipsNetworkAttributes = new Dictionary<string, object>();
+        chipsNetworkAttributes.Add("id", "chipsnetwork");
+        chipsNetworkAttributes.Add("data-toggle", "tooltip");
+        chipsNetworkAttributes.Add("data-placement", "top");
+        chipsNetworkAttributes.Add("data-title", "<div><div><div class='text-left'><strong>Формат ввода этажа</strong></div><div class='text-left'><code>[номер этажа]</code>;</div><div class='text-left'><code>[высота этажа]</code>;</div><div class='text-left'><code>[ширина воздуховода]</code>x<code>[высота воздуховода]</code>;</div><div class='text-left'><code>[дополнительная длина воздуховодов]</code>;</div><div class='text-left'><code>[сумма КМС на участке]</code>;</div><div class='text-left'><code>[ширина клапана]</code>x<code>[высота клапана]</code>(при наличии);</div></div><div><div class='text-left'><strong>Формат ввода диапазона этажей</strong></div><div class='text-left'><code>[первый этаж]</code>-<code>[последний этаж]</code>;</div><div class='text-left'><code>[высота этажей]</code>;</div><div class='text-left'><code>[ширина воздуховода]</code>x<code>[высота воздуховода]</code>;</div><div class='text-left'><code>[дополнительная длина воздуховодов]</code>;</div><div class='text-left'><code>[сумма КМС на участке]</code>;</div><div class='text-left'><code>[ширина клапана]</code>x<code>[высота клапана]</code>(при наличии);</div></div></div>");
+        resultsAttr = new Dictionary<string, object>();
+        resultsAttr.Add("id", "results");
+        BuildingTypeAttr1=new Dictionary<string, object>();
+        BuildingTypeAttr1.Add("data-toggle","tooltip");
+        BuildingTypeAttr1.Add("data-placement","top");
+        BuildingTypeAttr1.Add("data-title","Жилое здание");
+        BuildingTypeAttr2=new Dictionary<string, object>();
+        BuildingTypeAttr2.Add("data-toggle","tooltip");
+        BuildingTypeAttr2.Add("data-placement","top");
+        BuildingTypeAttr2.Add("data-title","Общественное здание");
+    }
+
+    public bool Show { get; set; }
+
+    void ShowToggle()
+    {
+        Show = true;
+    }
+
+    void HideToggle()
+    {
+        Show = false;
+    }
+
+
+    List<string> _10601Chips { get; set; } = new List<string>();
+
+    List<Sel.Item> _10202Items { get; set; } = new List<Sel.Item>()
+    {
+        new Sel.Item
+        {
+            Name = "Лиственные древесные стройматериалы: штабель",
+            Val = 13.8
+        },
+        new Sel.Item
+        {
+            Name = "Кабинеты",
+            Val = 14.0
+        },
+        new Sel.Item
+        {
+            Name = "Помещения, облицованные панелями ДВП",
+            Val = 18.1
+        },
+        new Sel.Item
+        {
+            Name = "Административные помещения",
+            Val = 14.0
+        },
+        new Sel.Item
+        {
+            Name = "Общественные здания",
+            Val = 14.0
+        },
+        new Sel.Item
+        {
+            Name = "Библиотеки, архивы",
+            Val = 14.5
+        }
+    };
+
+    //fields
+    #region fields
+    public string PopTitle { get; set; } = "Информация";
+    public string _1604_1HeightCorridorFieldName { get; set; } = "Высота коридора";
+    public string _1604_1HeightCorridorPopContent { get; set; } = "Высота коридора от пола до подвесного потолка при его наличии или просто до потолка. Если потолок решётчатого типа (не сплошной), то высоту нужно брать до перекрытия";
+    public string _1605AreaCorridorFieldName { get; set; } = "Площадь коридора";
+    public string _1605AreaCorridorPopContent { get; set; } = "Площадь коридора, для которого рассчитывается системы удаления дыма";
+    public string _1606LengthCorridorFieldName { get; set; } = "Длина коридора";
+    public string _1606LengthCorridorPopContent { get; set; } = "Длина коридора, считается по центральной линии. Если коридор разветвлённый, то принимается самый длинный из путей";
+
+
+    public string _1301FieldName { get; set; } = "Температура помещения";
+    public string _1301PopContent { get; set; } = "Температура помещения. При расчёте противодымной вентиляции используется температура летнего периода по параметрам Б";
+    public string _1301PopRef { get; set; } = "СП 131.13330.2018, таблица 4.1, колонка 4";
+    public string _1301PopLink { get; set; } = "Строительная климатология";
+    public string _1301PopUri { get; set; } = "http://docs.cntd.ru/document/554402860/";
+    public string _10301_1FieldName { get; set; } = "Площадь помещения";
+    public string _10301_1PopContent { get; set; } = "Площадь помещения, выходящего в коридор. Здесь выбирается самое пожароопасное помещение из всех помещений, выходящих в коридор, из которого планируется удалять дым. Как выбрать самое пожароопасное помещение? Вероятно это должно быть помещение с малым объёмом и большим количеством горючих материалов";
+    public string _10301_2FieldName { get; set; } = "Высота помещения";
+    public string _10301_2PopContent { get; set; } = "Высота помещения, выходящего в коридор";
+    public string _10201FieldName { get; set; } = "Масса материалов";
+    public string _10201PopContent { get; set; } = "Масса материалов, которые находятся в помещении, выходящем в коридор";
+    public string _10202FieldName { get; set; } = "Теплота сгорания материалов";
+    public string _10202PopContent { get; set; } = "Низшая теплота сгорания материалов, которые находятся в помещении, выходящем в коридор";
+    public string _10202PopRef { get; set; } = "Мет. рек. к СП 7.13130.2013, прил. 1, пункт 6 (табл.)";
+    public string _10205FieldName { get; set; } = "Теплота сгорания древ.";
+    public string _10205PopContent { get; set; } = "Теплота сгорания древесины";
+    public string _10500FieldName { get; set; } = "Критическая пожарная нагрузка";
+    public string _10500PopContent { get; set; } = "Удельное критическое количество пожарной на­грузки";
+    public string _10500PopRef { get; set; } = "Меm. рек. к СП 7.13130.2013, прил. 1, пункт 3";
+    public string _10600FieldName { get; set; } = "Проёмность помещения";
+    public string _10600PopContent { get; set; } = "Показатель проёмности помещения";
+    public string _10600PopRef { get; set; } = "Мет.рек. к СП 7.13130.2013, прил. 1, формула 6 по порядку";
+    public string _10601FieldName { get; set; } = "Ширина и высота проёмов помещения";
+    public string _10601PopContent { get; set; } = "Ширина и высота проёмов помещения. Для каждого проёма нужно ввести в поле ширину и высоту через точку-с-запятой <code>[ширина];[высота]</code> и затем нажать <code>Enter</code>. Повторить процедуру для каждого проёма помещения";
+    public string _10100FieldName { get; set; } = "Приведённая пожарная нагрузка";
+    public string _10200FieldName { get; set; } = "Приведённая пожарная нагрузка";
+    public string _10100PopContent { get; set; } = "Удельная приведенная пожарная нагрузка, отнесен­ная к площади пола помещения";
+    public string _10100PopRef { get; set; } = "Меm. рек. к СП 7.13130.2013, прил. 1, пункт 1";
+    public string _10200PopContent { get; set; } = "Удельная приведенная пожарная нагрузка, отнесен­ная к площади тепловоспринимающей поверхности ограж­дающих строительных конструкций помещения";
+    public string _10200PopRef { get; set; } = "Меm. рек. к СП 7.13130.2013, прил. 1, пункт 2";
+    public string _1702_1703FieldName { get; set; } = "Ширина и высота двери";
+    public string _1702_1703PopContent { get; set; } = "Ширина и высота двери из коридора по пути эвакуации (например в лестничную клетку)";
+    public string NetworkFieldName { get; set; } = "Сеть воздуховодов";
+    public string NetworkPopContent { get; set; } = "......";
+    public string _203QuFloorsFN { get; set; } = "Количество этажей";
+    public string _203QuFloorsPC { get; set; } = "Общее количество этажей, на которых располагается лестничная клетка включая подземные этажи при наличии";
+    public string _204FirstFloorFN { get; set; } = "Индекс первого этажа";
+    public string _204FirstFloorPC { get; set; } = "Этаж, который является первым для лестничной клетки. В этом поле указывается индекс <code>1, 2, 3</code> или <code>-1, -2, -3</code> в случае, если этажи подземные. Индекс <code>0</code> не используется - для первого надземного этажа используется индекс <code>1</code>, а для первого подземного индекс <code>-1</code>";
+    public string BuildingTypeFN { get; set; } = "Тип здания";
+    public string BuildingTypePC { get; set; } = "Тип здания - жилое или общественное";
+#endregion
+    string comparer = "";
+    protected override async Task OnAfterRenderAsync(bool first)
+
+    {
+        await Js.InvokeVoidAsync("funcs.pop");
+        await Js.InvokeVoidAsync("funcs.selectpicker");
+        await Js.InvokeVoidAsync("funcs.tooltipNetwork");
+        
+        
+    }
+
+    
+
+    void _10601AssignOpeningArea()
+    {
+        try
+        {
+    //если при вызове метода в поле ничего нет, то ничего не происходит, просто коллекция очищается
+            if (_10601Chips.Count == 0)
+            {
+                Room.Openings.Clear();
+            }
+    //в этом блоке при каждом добавлении или удалении элемента в коллекцию _10601List добавляются и обрабатываются все элементы из коллекции _10601Chips
+    //то есть строка разделяется по разделителю ; затем преобразуется в double и для элемента Item1 кортежа вычисляется площадь путём перемножения того, что было до знака ; и того, что было после этого знака
+            else
+            {
+                Room.Openings.Clear();
+                foreach (var item in _10601Chips)
+                {
+                    double openingWidth = item.Split(";")[0].ToDouble();
+                    double openingHeight = item.Split(";")[1].ToDouble();
+                    Room.Openings.Add(new Opening(openingWidth, openingHeight));
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Toast.Add(ex.Message, MatToastType.Danger);
+        }
+    }
+
+    //assignings
+
+    #region hall
+
+    void _1604_1AssignHeightCorridor(string heightCorridor)
+    {
+        Hall.Height = heightCorridor.ToDouble();
+    }
+
+    void _1605AssignAreaCorridor(string areaCorridor)
+    {
+        Hall.Area = areaCorridor.ToDouble();
+    }
+
+    void _1606AssignLengthCorridor(string lengthCorridor)
+    {
+        Hall.Length = lengthCorridor.ToDouble();
+    }
+
+    #endregion
+
+    #region room
+
+    void _1301AssignTempRoomCelsuis(string tempRoom)
+    {
+        Climate.TempInside = tempRoom.ToDouble();
+    }
+
+    void _10301_1AssignRoomArea(string roomArea)
+    {
+        Room.Area = roomArea.ToDouble();
+        
+    }
+
+    void _10301_2AssignRoomHeight(string roomHeight)
+    {
+        Room.Height = roomHeight.ToDouble();
+    }
+
+    #endregion
+
+    #region doorHall
+
+    void _1702AssignDoorWidth(string doorWidth)
+    {
+        Hall.Door.Width = doorWidth.ToDouble();
+    }
+
+    void _1703AssignDoorHeight(string doorHeight)
+    {
+        Hall.Door.Height = doorHeight.ToDouble();
+    }
+
+    void _10201AssignMassMaterial(string massMaterial)
+    {
+        Room.MaterialMass = massMaterial.ToDouble();
+    }
+
+    void _10202AssignHeatCombustionMaterial(string heatCombustionMaterial)
+    {
+        Room.MaterialHeatCombustion = heatCombustionMaterial.ToDouble();
+    }
+
+    #endregion
+
+    #region network
+    private void AssignFirstFloor(string first)
+    {
+        Network.First = first.ToInt();
+    }
+
+    private void AssignQuFloors(string qu)
+    {
+        Network.Qu = qu.ToInt();
+    }
+    public List<string> ChipsNetwork { get; set; } = new List<string>();
+    //при каждом добавлении обрабатывается только последний элемент в списке. ранее в supplystaircase.razor похоже при каждом добавлении похоже обрабатывались все элементы, вроде бы это не нужно
+    private void AddToNetwork()
+    {
+        try
+        {
+    //проверка на наличие элементов в списке строк ChipsNetwork для того, чтобы избежать появлении ошибки при обращении к пустому списку
+            if (ChipsNetwork.Count > 0)
+            {
+    //если значение счётчика на момент вызова больше, чем количество элементов в списке ChipsNetwork - значит было не добавление, а удаление. Нужно удалить нужный элемент из списка Network.System
+
+                var s = ChipsNetwork.Last();
+    //если первый элемент до знака ; содержит "-" (это означает, что указан диапазон)
+                if (s.Split(";")[0].Contains("-"))
+                {
+                    var first = s.Split(";")[0].Split("-")[0].ToInt();
+                    var last = s.Split(";")[0].Split("-")[1].ToInt();
+                    var floorHeight = s.Split(";")[1].ToDouble();
+                    double ductWidth = 0, ductHeight = 0;
+                    if (s.Split(";")[2].Contains("x") /*английская иск*/)
+                    {
+                        ductWidth = s.Split(";")[2].Split("x")[0].ToDouble();
+                        ductHeight = s.Split(";")[2].Split("x")[1].ToDouble();
+                    }
+                    if (s.Split(";").Contains("х") /*русская ха*/)
+                    {
+                        ductWidth = s.Split(";")[2].Split("х")[0].ToDouble();
+                        ductHeight = s.Split(";")[2].Split("х")[1].ToDouble();
+                    }
+                    double additionalDuctLength = s.Split(";")[3].ToDouble();
+                    var ksiSum = s.Split(";")[4].ToDouble();
+                    double valveWidth = 0, valveHeight = 0;
+
+                    if (s.Split(";")[5] != "") /*если строка содержит элемент 5, то есть размеры клапана*/
+                    {
+                        if (s.Split(";")[2].Contains("x") /*английская иск*/)
+                        {
+                            valveWidth = s.Split(";")[5].Split("x")[0].ToDouble();
+                            valveHeight = s.Split(";")[5].Split("x")[1].ToDouble();
+                        }
+                        if (s.Split(";").Contains("х") /*русская ха*/)
+                        {
+                            valveWidth = s.Split(";")[5].Split("х")[0].ToDouble();
+                            valveHeight = s.Split(";")[5].Split("х")[1].ToDouble();
+                        }
+                        Network.AddRange((first,last), floorHeight, (ductWidth,ductHeight), additionalDuctLength, ksiSum, (valveWidth,valveHeight));
+                    }
+
+                    else /*если элемент 5 отсутствует в строке, используется метод AddRange без параметров для клапана*/
+                    {
+                        Network.AddRange((first,last), floorHeight, (ductWidth,ductHeight), additionalDuctLength, ksiSum);
+                    }
+
+                    if (Network.System.Count == Network.Qu)
+                    {
+                        Toast.Add($"Добавление участков завершено", MatToastType.Success);
+                    }
+                    else
+                    {
+                        Toast.Add($"Добавлено {last - first + 1} участков(а)", MatToastType.Info);
+                    }
+                }
+                else
+                {
+                    var index = s.Split(";")[0].Split("-")[0].ToInt();
+                    var floorHeight = s.Split(";")[1].ToDouble();
+                    double ductWidth = 0, ductHeight = 0;
+                    if (s.Split(";")[2].Contains("x") /*английская иск*/)
+                    {
+                        ductWidth = s.Split(";")[2].Split("x")[0].ToDouble();
+                        ductHeight = s.Split(";")[2].Split("x")[1].ToDouble();
+                    }
+                    if (s.Split(";").Contains("х") /*русская ха*/)
+                    {
+                        ductWidth = s.Split(";")[2].Split("х")[0].ToDouble();
+                        ductHeight = s.Split(";")[2].Split("х")[1].ToDouble();
+                    }
+                    double additionalDuctLength = s.Split(";")[3].ToDouble();
+                    var ksiSum = s.Split(";")[4].ToDouble();
+                    double valveWidth = 0, valveHeight = 0;
+                    if (s.Split(";")[5] != "") /*если строка содержит элемент 5, то есть размеры клапана*/
+                    {
+                        if (s.Split(";")[2].Contains("x") /*английская иск*/)
+                        {
+                            valveWidth = s.Split(";")[5].Split("x")[0].ToDouble();
+                            valveHeight = s.Split(";")[5].Split("x")[1].ToDouble();
+                        }
+                        if (s.Split(";").Contains("х") /*русская ха*/)
+                        {
+                            valveWidth = s.Split(";")[5].Split("х")[0].ToDouble();
+                            valveHeight = s.Split(";")[5].Split("х")[1].ToDouble();
+                        }
+                        Network.AddSingle(index, floorHeight, (ductWidth,ductHeight), additionalDuctLength, ksiSum, (valveWidth,valveHeight));
+                    }
+
+                    else /*если элемент 5 отсутствует в строке, используется метод AddRange без параметров для клапана*/
+                    {
+                        Network.AddSingle(index, floorHeight, (ductWidth,ductHeight), additionalDuctLength, ksiSum);
+                    }
+
+
+                    if (Network.System.Count == Network.Qu)
+                    {
+                        Toast.Add($"Добавление участков завершено", MatToastType.Success);
+                    }
+                    else
+                    {
+                        Toast.Add($"Добавлен 1 участок", MatToastType.Info);
+                    }
+                }
+            }
+    //если в списке строк ChipsNetwork ничего нет, то ничего не происходит, только сбрасывается счётчик counter
+            else
+            {
+                Toast.Add("Коллекция пуста", MatToastType.Info);
+            }
+        }
+        catch (Exception ex)
+        {
+            Toast.Add(ex.Message, MatToastType.Danger);
+        }
+    }
+
+    private void RemoveFromNetwork()
+    {
+        var s = ChipsNetwork.Last();
+
+        if (s.Split(";")[0].Contains("-"))
+        {
+            var first = s.Split(";")[0].Split("-")[0].ToInt();
+            var last = s.Split(";")[0].Split("-")[1].ToInt();
+            Network.RemoveRange((first,last));
+            Toast.Add($"Удалено {last - first + 1} участков(а)", MatToastType.Primary);
+        }
+        else
+        {
+            var index = s.Split(";")[0].ToInt();
+            Network.RemoveSingle(index);
+            Toast.Add($"Удалён 1 участок", MatToastType.Primary);
+        }
+        //так как участок удаляется и в какой-то степени данные в таблице результатов становятся неактуальны, скроем таблицу результатов
+        ShowResult = false;
+    }
+
+    #endregion
+
+    #region showresult
+
+    bool ShowResult { get; set; }
+    Network Result { get; set; }=new Network();
+    private async Task AssignShowResult()
+    {
+        try
+        {
+            Network.CompLevels();
+            Network.CompSystem();
+            Result = Network.Clone();
+            
+            ShowResult = true;
+
+            await OnAfterRenderAsync(false);
+            await Js.InvokeVoidAsync("funcs.scrollResultDown");
+        }
+        catch (Exception ex)
+        {
+            Toast.Add(ex.Message, MatToastType.Danger);
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    #endregion
+
+    
+
+    #region showOpeningsReportTable
+
+    bool ShowOpenings { get; set; }
+
+    private void ShowToggleOpenings()
+    {
+        ShowOpenings = true;
+    }
+
+    private void HideToggleOpenings()
+    {
+        ShowOpenings = false;
+    }
+
+    #endregion
+
+    #region buildingType
+    public int BuildingType { get; set; }
+
+    private void AssignBuildingType()
+    {
+        if (BuildingType==1)
+        {
+            Hall.BuildingType = wasmSmokeMan.Shared.RemoveHall.BuildingType.Residential;
+        }
+        if (BuildingType==2)
+        {
+            Hall.BuildingType = wasmSmokeMan.Shared.RemoveHall.BuildingType.Public;
+        }
+    }
+
+    public Dictionary<string, object> BuildingTypeAttr1 { get; set; }
+
+    public Dictionary<string, object> BuildingTypeAttr2 { get; set; }
+    #endregion
+    
+    //пока откажемся от идеи отслеживать изменения - пока что неясно как это сделать без потери скорости работы программы
+    #region trackChanges
+
+    void TrackChanges()
+    {
+        if (Result.System.Count>0)
+        {
+            
+            if (Network.ToJson()==Result.ToJson())
+            {
+                
+                
+            }
+            else
+            {
+                
+                
+            }
+        }
+    }
+    #endregion
+}

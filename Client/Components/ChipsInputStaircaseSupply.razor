@@ -1,4 +1,4 @@
-﻿<div class="form-group" style="margin-bottom: 16;">
+﻿<div class="form-group" style="margin-bottom: 16px;">
     <div class="row justify-content-between">
         <div class="col"><label class="col-form-label">@Label</label></div>
         <div class="col col-1 d-flex align-items-center justify-content-end">
@@ -10,7 +10,7 @@
         <ul class="@ChipsListClass" style="display: inline-flex; flex-wrap: wrap; width: 100%; margin: 0; padding: 5px; list-style: none;">
             @foreach (string chip in Chips)
             {
-                <li class="@ChipClass" id="@chip" style="display: flex; justify-content: center; align-items: center; padding: 0 25px; height: 30px; border-radius: @(ChipBorderRadius)rem; background-color: #f1f1f1; line-height: 1.6; margin: 5px 5px 5px 0px; padding: 0 10px; ">
+                <li class="@ChipClass" id="@chip" style="display: flex; justify-content: center; align-items: center; padding: 0 25px; height: 30px; border-radius: @(ChipBorderRadius)rem; background-color: #ff253a; line-height: 1.6; margin: 5px 5px 5px 0px; padding: 0 10px; ">
                     @if (PrependIconTemplate != null)
                     {
                         @PrependIconTemplate

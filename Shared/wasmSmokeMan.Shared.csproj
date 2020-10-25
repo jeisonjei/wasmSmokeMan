@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="system.text.json" Version="4.7.2" />
   </ItemGroup>
 
@@ -50,6 +51,9 @@
     </Compile>
     <Compile Include="..\..\consoleRemHall\SimpleObjects\Opening.cs">
       <Link>RemoveHall\SimpleObjects\Opening.cs</Link>
+    </Compile>
+    <Compile Include="..\..\consoleRemHall\SimpleObjects\Valve.cs">
+      <Link>RemoveHall\SimpleObjects\Valve.cs</Link>
     </Compile>
     <Compile Include="..\..\consoleRemHall\SimpleObjects\Window.cs">
       <Link>RemoveHall\SimpleObjects\Window.cs</Link>

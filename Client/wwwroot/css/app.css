@@ -216,3 +216,13 @@ app {
     border-color: #6c757d !important;
     box-shadow:rgba(147, 147, 147,0.5) 2px -2px 2px;
 }
+.tooltip-inner{
+    max-width: 450px;
+    justify-items:start;
+    
+}
+.nopadding tr td,.nopadding tr th{
+    padding: 0 !important;
+    margin:0 !important;
+    text-align: center !important;
+}

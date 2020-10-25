@@ -1,0 +1,57 @@
+﻿@using wasmSmokeMan.Shared.RemoveHall
+@using DocumentFormat.OpenXml.Spreadsheet
+@using Type = wasmSmokeMan.Shared.RemoveHall.Type
+@if (Show)
+{
+
+    int i = 1;
+    <table id="intreporttablenetwork" class="table small nopadding">
+        <thead class="thead-light">
+            <tr>
+                <th>№</th>
+                <th>H</th>
+                <th>Отм.</th>
+                <th>Возд.</th>
+                <th>∑ КМС</th>
+                <th>Клап.</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in System)
+            {
+                <tr>
+                    <td>@item.Key</td>
+                    <td>@item.Value.Floor.Height.RoundTo2()</td>
+                    <td>@item.Value.Floor.Level.RoundTo2()</td>
+                    @if (item.Value.NetPart.Duct.Type == Type.Rectangular)
+                    {
+                        <td>@item.Value.NetPart.Duct.Width.RoundTo0() x @item.Value.NetPart.Duct.Height.RoundTo0()</td>
+                    }
+                    else
+                    {
+                        <td>@item.Value.NetPart.Duct.Diameter.RoundTo0()</td>
+                    }
+                    <td>@item.Value.NetPart.KsiSum.RoundTo2()</td>
+                    @if (item.Value.NetPart.Valve != null)
+                    {
+                        <td>да</td>
+                    }
+                    else
+                    {
+                        <td>нет</td>
+                    }
+                </tr>
+                i++;
+            }
+        </tbody>
+    </table>
+    <div class="row"><div class="col"><span class="badge badge-secondary d-block"></span></div></div>
+}
+
+
+@code{
+    [Parameter]
+    public bool Show { get; set; } = false;
+    [Parameter]
+    public SortedList<int,SysPart> System { get; set; }=new SortedList<int, SysPart>();
+}

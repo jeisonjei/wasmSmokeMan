@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col">
             <select class="selectpicker" data-width="100%" @bind="@Number">
-                @foreach (var item in Items)
+                @foreach (var item in SortedItems)
                 {
                     <option value="@item.Val" class="row justify-content-between">
                         @item.Val.ToString("0.0") - @item.Name
@@ -23,6 +23,11 @@
 
 
 @code {
+    protected override void OnInitialized()
+    {
+        SortedItems=Items.OrderBy(x => x.Val);
+    }
+    IOrderedEnumerable<Item> SortedItems { get; set; }
     [Parameter]
     public List<Item> Items { get; set; }
 

@@ -9,11 +9,11 @@
     <div class="row">
         <div class="input-group was-validated col">
             <div class="input-group-prepend">
-                <span class="input-group-text">W</span>
+                <span class="input-group-text">@Field1</span>
             </div>
             <input type="text" required pattern="(-|)\d+\.{0,1}\b\d*" class="form-control" @bind:event="oninput" @bind="@Number1" />
             <div class="input-group-prepend">
-                <span class="input-group-text">H</span>
+                <span class="input-group-text">@Field2  </span>
             </div>
             <input type="text" required pattern="(-|)\d+\.{0,1}\b\d*" class="form-control" @bind:event="oninput" @bind="@Number2" />
         </div>
@@ -22,7 +22,10 @@
 </div>
 
 @code {
-
+    [Parameter]
+    public string Field1 { get; set; } = "W";
+    [Parameter]
+    public string Field2 { get; set; } = "H";
     [Parameter]
     public string Label { get; set; }
     [Parameter]

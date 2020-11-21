@@ -25,7 +25,42 @@
                     <div class="tab-content" id="v-pills-tabContent">
                         <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                             @*#1*@
-                            <InpGroup Field1="Tн" Field2="Тв" Label="@TempFN" PopTitle="Информация" PopContent="@TempPC" PopRef="@TempRef"></InpGroup>
+                            <InpGroup 
+                            Field1="Tн" 
+                            Field2="Тв" 
+                            Label="@TempFN" 
+                            PopTitle="Информация" 
+                            PopContent="@TempPC" 
+                            PopRef="@TempRef" 
+                            Number1Changed="ATempOutside" 
+                            Number2Changed="ATempInside">
+                            </InpGroup>
+                            <InpSingle
+                            Label="@WindVelocityFN"
+                            PopTitle="Информация"
+                            PopContent="@WindVelocityPC"
+                            PopRef="@WindVelocityPR"
+                            NumberChanged="AWindVelocity">
+                            </InpSingle>
+                            <InpGroup
+                            Label="Первый этаж и кол-во этажей"
+                            Field1="Первый"
+                            Field2="Всего"
+                            Number1Changed="AFirstFloorIndex"
+                            Number2Changed="AQuFloors">
+                            </InpGroup>
+                            <ChipsInputStaircaseSupply 
+                            Label="@ChipsFloorsFN"    
+                            PopTitle="@PopTitle"    
+                            PopContent="@ChipsFloorsPC" 
+                            Chips="@ChipsFloors" 
+                            ShowInputOutline="true" 
+                            EnableBackspaceRemove="true" 
+                            OnChipsChanged="AFloorLevels" 
+                            OnFocus="TableFloorsShowToggle" 
+                            OnFocusOut="TableFloorsHideToggle">
+                            </ChipsInputStaircaseSupply>
+                            <IntReportTableFloors Show="@TableFloorsShow" Items="@Floors.Levels"></IntReportTableFloors>
                         </div>
                         <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                             @*#2*@
@@ -40,7 +75,11 @@
         </div>
         @*3rd row*@
         <div id="results" class="col-lg-5 col-xl-5 mt-xl-3 overflow-auto" style="height:85vh">
-            
+            <IntResultSingleDouble Name="Температура наружного воздуха" Val="Climate.TempOutside" Units="°C"></IntResultSingleDouble>
+            <IntResultSingleDouble Name="Температура внутреннего воздуха" Val="Climate.TempInside" Units="°C"></IntResultSingleDouble>
+            <IntResultSingleDouble Name="Скорость ветра" Val="Climate.WindVelocity" Units="м/с"></IntResultSingleDouble>
+            <IntResultSingleDouble Name="Индекс первого этажа" Val="Floors.First"></IntResultSingleDouble>
+            <IntResultSingleDouble Name="Количество этажей" Val="Floors.Qu"></IntResultSingleDouble>
         </div>
     </div>
 

@@ -10,7 +10,7 @@
         <ul class="@ChipsListClass" style="display: inline-flex; flex-wrap: wrap; width: 100%; margin: 0; padding: 5px; list-style: none;">
             @foreach (string chip in Chips)
             {
-                <li class="@ChipClass" id="@chip" style="display: flex; justify-content: center; align-items: center; padding: 0 25px; height: 30px; border-radius: @(ChipBorderRadius)rem; background-color: #ff253a; line-height: 1.6; margin: 5px 5px 5px 0px; padding: 0 10px; ">
+                <li class="@ChipClass" id="@chip" style="display: flex; justify-content: center; align-items: center; padding: 0 25px; height: 30px; border-radius: @(ChipBorderRadius)rem; background-color: #ffc107; line-height: 1.6; margin: 5px 5px 5px 0px; padding: 0 10px; ">
                     @if (PrependIconTemplate != null)
                     {
                         @PrependIconTemplate

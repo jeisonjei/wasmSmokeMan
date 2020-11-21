@@ -17,7 +17,10 @@ using wasmSmokeMan.Shared.SupplyStaircase.SimpleObjects;
 using wasmSmokeMan.Shared.RemoveHall;
 using Climate1 = wasmSmokeMan.Shared.SupplyStaircase.NaturalPhenomenaIndependent.Climate;
 using Climate2=wasmSmokeMan.Shared.RemoveHall.Climate;
+using Climate3 = wasmSmokeMan.Shared.SupplyElevator.Climate;
 using Window = wasmSmokeMan.Shared.SupplyStaircase.SimpleObjects.Window;
+using Floors1 = wasmSmokeMan.Shared.SupplyStaircase.SemanticObjects.Floors;
+using Floors3 = wasmSmokeMan.Shared.SupplyElevator.Floors;
 
 namespace wasmSmokeMan.Client
 {
@@ -31,16 +34,16 @@ namespace wasmSmokeMan.Client
                 sp => new HttpClient {BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)});
             //регистрация классов, которые относятся к расчёту ПОДПОР В ЛЕСТНИЧНУЮ КЛЕТКУ. Функциональность некоторых классов повторяется, но решено всё равно для каждого расчёта создавать свои классы чтобы избежать путаницы
             Climate1 climate1 = new Climate1(-25, 20, 2);
-            Floors floors = new Floors(1, 10);
-            floors.AddRange((1, 10), 3.1);
+            Floors1 floors1 = new Floors1(1, 10);
+            floors1.AddRange((1, 10), 3.1);
             DoorOutside doorOutside = new DoorOutside(1.4, 2.4);
             DoorInside doorInside = new DoorInside(1.1, 2.1, DoorInside.Type.Usual, climate1);
-            Pressures pressures = new Pressures(floors, climate1);
+            Pressures pressures = new Pressures(floors1, climate1);
             Window window = new Window(1.8, 1, climate1, pressures);
-            StairCase stair = new StairCase(16, StairCase.Portal.Straight, floors, doorOutside, 1, doorInside, window);
+            StairCase stair = new StairCase(16, StairCase.Portal.Straight, floors1, doorOutside, 1, doorInside, window);
             MethodsSupplyStair methodsSupplyStair = new MethodsSupplyStair(stair, climate1);
             builder.Services.AddSingleton(climate1);
-            builder.Services.AddSingleton(floors);
+            builder.Services.AddSingleton(floors1);
             builder.Services.AddSingleton(doorOutside);
             builder.Services.AddSingleton(doorInside);
             builder.Services.AddSingleton(pressures);
@@ -62,7 +65,12 @@ namespace wasmSmokeMan.Client
             builder.Services.AddSingleton(doorHall);
             builder.Services.AddSingleton(hall);
             builder.Services.AddSingleton(network);
-
+            //регистрация классов, которые относятся к расчёту ПОДПОР В ЛИФТ
+            Climate3 climate3 = new Climate3(-25, 18, 2);
+            Floors3 floors3 = new Floors3(1, 10);
+            floors3.AddRange((1, 10), 3.2);
+            builder.Services.AddSingleton(climate3);
+            builder.Services.AddSingleton(floors3);
             builder.Services.AddMatToaster(config =>
             {
                 config.Position = MatToastPosition.BottomRight;

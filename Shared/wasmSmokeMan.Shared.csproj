@@ -10,6 +10,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\consoleLift\CompoundObjects\Elevator.cs" Link="SupplyElevator\CompoundObjects\Elevator.cs" />
+    <Compile Include="..\..\consoleLift\Helpers\Converter.cs" Link="SupplyElevator\Helpers\Converter.cs" />
+    <Compile Include="..\..\consoleLift\NaturalPhenomenaIndependent\Climate.cs" Link="SupplyElevator\NaturalPhenomenaIndependent\Climate.cs" />
+    <Compile Include="..\..\consoleLift\SemanticObjects\Floors.cs" Link="SupplyElevator\SemanticObjects\Floors.cs" />
+    <Compile Include="..\..\consoleLift\SimpleObjects\ElevatorDoor.cs" Link="SupplyElevator\SimpleObjects\ElevatorDoor.cs" />
+    <Compile Include="..\..\consoleLift\SimpleObjects\HallDoor.cs" Link="SupplyElevator\SimpleObjects\HallDoor.cs" />
     <Compile Include="..\..\consoleRemHall\CompoundObjects\Hall.cs">
       <Link>RemoveHall\CompoundObjects\Hall.cs</Link>
     </Compile>
@@ -64,7 +70,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="SupplyElevator\" />
+    <Folder Include="SupplyElevator\CompoundObjects\" />
+    <Folder Include="SupplyElevator\NaturalPhenomenaIndependent\" />
+    <Folder Include="SupplyElevator\Helpers\" />
+    <Folder Include="SupplyElevator\SemanticObjects\" />
+    <Folder Include="SupplyElevator\SimpleObjects\" />
   </ItemGroup>
 
 </Project>

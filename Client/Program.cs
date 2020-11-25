@@ -21,6 +21,7 @@ using Climate3 = wasmSmokeMan.Shared.SupplyElevator.Climate;
 using Window = wasmSmokeMan.Shared.SupplyStaircase.SimpleObjects.Window;
 using Floors1 = wasmSmokeMan.Shared.SupplyStaircase.SemanticObjects.Floors;
 using Floors3 = wasmSmokeMan.Shared.SupplyElevator.Floors;
+using wasmSmokeMan.Shared.SupplyElevator;
 
 namespace wasmSmokeMan.Client
 {
@@ -69,8 +70,14 @@ namespace wasmSmokeMan.Client
             Climate3 climate3 = new Climate3(-25, 18, 2);
             Floors3 floors3 = new Floors3(1, 10);
             floors3.AddRange((1, 10), 3.2);
+            ElevatorDoor elevatorDoor = new ElevatorDoor(1, 2);
+            HallDoor hallDoor = new HallDoor(1.1, 2.1);
+            Elevator elevator = new Elevator(floors3, 4, 5, elevatorDoor, hallDoor, climate3, false);
             builder.Services.AddSingleton(climate3);
             builder.Services.AddSingleton(floors3);
+            builder.Services.AddSingleton(elevatorDoor);
+            builder.Services.AddSingleton(hallDoor);
+            builder.Services.AddSingleton(elevator);
             builder.Services.AddMatToaster(config =>
             {
                 config.Position = MatToastPosition.BottomRight;

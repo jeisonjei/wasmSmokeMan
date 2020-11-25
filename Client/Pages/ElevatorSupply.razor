@@ -1,5 +1,6 @@
 ﻿@page "/elevatorsupply"
-<div class="container-fluid px-3">
+@using wasmSmokeMan.Shared.SupplyElevator
+<div class="container-fluid px-3 overflow-hidden" style="height:92vh">
     <h2 class="text-center">Подпор в лифт</h2>
     <hr class="my-2" />
     <div class="row">
@@ -7,11 +8,11 @@
         <div class="col-md-4 col-lg-3 col-xl-3">
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 @*1st tab*@
-                <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Помещение и материалы</a>
+                <a class="nav-link active" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="true">Схема расположения</a>
                 @*2nd tab*@
-                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Коридор и дверь</a>
+                <a class="nav-link" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="false">Температуры и кол-во этажей</a>
                 @*3rd tab*@
-                <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Этажи и сеть воздуховодов</a>
+                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Лифт и двери</a>
                 @*comp button*@
                 <div class="mt-2">
                     <button class="btn btn-outline-danger btn-lg" @onclick="AssignShowResult">Расчёт</button>
@@ -23,63 +24,136 @@
             <div class="row">
                 <div class="col">
                     <div class="tab-content" id="v-pills-tabContent">
-                        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                        <div class="tab-pane fade show active" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
                             @*#1*@
-                            <InpGroup 
-                            Field1="Tн" 
-                            Field2="Тв" 
-                            Label="@TempFN" 
-                            PopTitle="Информация" 
-                            PopContent="@TempPC" 
-                            PopRef="@TempRef" 
-                            Number1Changed="ATempOutside" 
-                            Number2Changed="ATempInside">
+                            <p>Лифтовый холл на 1-ом этаже</p>
+                            <RadzenSelectBar TValue="bool" @bind-Value="Elevator.WithHallOn1stFloor">
+                                <Items>
+                                    <RadzenSelectBarItem Text="Есть" Value="true"></RadzenSelectBarItem>
+                                    <RadzenSelectBarItem Text="Нет" Value="false"></RadzenSelectBarItem>
+                                </Items>
+                            </RadzenSelectBar>
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                            @*#2*@
+                            <InpGroup Field1="Tн"
+                                      Field2="Тв"
+                                      Label="@TempFN"
+                                      PopTitle="Информация"
+                                      PopContent="@TempPC"
+                                      PopRef="@TempRef"
+                                      Number1Changed="ATempOutside"
+                                      Number2Changed="ATempInside">
                             </InpGroup>
-                            <InpSingle
-                            Label="@WindVelocityFN"
-                            PopTitle="Информация"
-                            PopContent="@WindVelocityPC"
-                            PopRef="@WindVelocityPR"
-                            NumberChanged="AWindVelocity">
+                            <InpSingle Label="@WindVelocityFN"
+                                       PopTitle="Информация"
+                                       PopContent="@WindVelocityPC"
+                                       PopRef="@WindVelocityPR"
+                                       NumberChanged="AWindVelocity">
                             </InpSingle>
-                            <InpGroup
-                            Label="Первый этаж и кол-во этажей"
-                            Field1="Первый"
-                            Field2="Всего"
-                            Number1Changed="AFirstFloorIndex"
-                            Number2Changed="AQuFloors">
+                            <InpGroup Label="Первый этаж и кол-во этажей"
+                                      PopContent="@FloorsCountPC"
+                                      Field1="Первый"
+                                      Field2="Всего"
+                                      Number1Changed="AFirstFloorIndex"
+                                      Number2Changed="AQuFloors">
                             </InpGroup>
-                            <ChipsInputStaircaseSupply 
-                            Label="@ChipsFloorsFN"    
-                            PopTitle="@PopTitle"    
-                            PopContent="@ChipsFloorsPC" 
-                            Chips="@ChipsFloors" 
-                            ShowInputOutline="true" 
-                            EnableBackspaceRemove="true" 
-                            OnChipsChanged="AFloorLevels" 
-                            OnFocus="TableFloorsShowToggle" 
-                            OnFocusOut="TableFloorsHideToggle">
+                            <ChipsInputStaircaseSupply Label="@ChipsFloorsFN"
+                                                       PopTitle="@PopTitle"
+                                                       PopContent="@ChipsFloorsPC"
+                                                       Chips="@ChipsFloors"
+                                                       ShowInputOutline="true"
+                                                       EnableBackspaceRemove="true"
+                                                       OnChipsChanged="AFloorLevels"
+                                                       OnFocus="TableFloorsShowToggle"
+                                                       OnFocusOut="TableFloorsHideToggle">
                             </ChipsInputStaircaseSupply>
                             <IntReportTableFloors Show="@TableFloorsShow" Items="@Floors.Levels"></IntReportTableFloors>
                         </div>
                         <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                            @*#2*@
-                        </div>
-                        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+
                             @*#3*@
+
+                            <InpSingle Label="Кол-во лифтов в шахте"
+                                       PopTitle="@PopTitle"
+                                       PopContent="@QuElevatorsPC"
+                                       NumberChanged="AQuElevators">
+                            </InpSingle>
+                            <InpGroup Label="Дверь лифта"
+                                      PopTitle="@PopTitle"
+                                      PopContent="@ElevatorDoorPC"
+                                      Number1Changed="@AElevatorDoorWidth"
+                                      Number2Changed="@AElevatorDoorHeight">
+                            </InpGroup>
+                            <InpSingle Label="Кол-во дверей в холле"
+                                       PopTitle="@PopTitle"
+                                       PopContent="@QuHallDoorsPC"
+                                       NumberChanged="AQuHallDoors">
+                            </InpSingle>
+                            <InpGroup Label="Двери холла"
+                                      PopTitle="@PopTitle"
+                                      PopContent="@HallDoorPC"
+                                      Number1Changed="AHallDoorWidth"
+                                      Number2Changed="AHallDoorHeight">
+                            </InpGroup>
+                            <InpSingle Label="Площадь кабины лифта"
+                                       PopTitle="@PopTitle"
+                                       PopContent="@FcabinPC"
+                                       NumberChanged="AFcabin">
+                            </InpSingle>
+                            <InpSingle Label="Площадь лифтовой шахты"
+                                       PopTitle="@PopTitle"
+                                       PopContent="@FshaftPC"
+                                       NumberChanged="AFshaft">
+                            </InpSingle>
                         </div>
+
                     </div>
                 </div>
             </div>
 
         </div>
         @*3rd row*@
-        <div id="results" class="col-lg-5 col-xl-5 mt-xl-3 overflow-auto" style="height:85vh">
+        <div @attributes="@resultAttr" class="col-lg-5 col-xl-5 mt-xl-3 overflow-auto" style="height:85vh">
+            <IntResultSingleString Name="Холл на 1-ом этаже" Val="@(Elevator.WithHallOn1stFloor ? "Да" : "Нет")"></IntResultSingleString>
             <IntResultSingleDouble Name="Температура наружного воздуха" Val="Climate.TempOutside" Units="°C"></IntResultSingleDouble>
             <IntResultSingleDouble Name="Температура внутреннего воздуха" Val="Climate.TempInside" Units="°C"></IntResultSingleDouble>
             <IntResultSingleDouble Name="Скорость ветра" Val="Climate.WindVelocity" Units="м/с"></IntResultSingleDouble>
             <IntResultSingleDouble Name="Индекс первого этажа" Val="Floors.First"></IntResultSingleDouble>
             <IntResultSingleDouble Name="Количество этажей" Val="Floors.Qu"></IntResultSingleDouble>
+            <table id="table" class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Этаж</th>
+                        <th>Уровень</th>
+                        <th>Давление</th>
+                        <th>Утечка</th>
+                        <th>Сумма</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var row in Elevator.Result)
+                    {
+                        <tr>
+                            <td>@row.FloorIndex</td>
+                            <td>@row.FloorLevel.RoundTo2()</td>
+                            <td>@row.Pressure.RoundTo1()</td>
+                            <td>@row.Gleakage.RoundTo3()</td>
+                            <td>@row.Gsum.RoundTo3()</td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+
+
+            @*---*@
+
+            <IntResultSingleDouble Name="Производительность вентилятора" Val="@Elevator.Lv.ToCubicMetersPerHour(Climate.DensityOutside).RoundTo0()" Units="м³/ч"></IntResultSingleDouble>
+
         </div>
     </div>
 

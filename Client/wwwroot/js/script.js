@@ -14,5 +14,6 @@
     scrollResultDown: function () {
         let elem = document.getElementById('results');
         $(elem).scrollTop(3000);
+        console.log("hello");
     },
 }

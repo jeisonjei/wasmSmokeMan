@@ -1,12 +1,19 @@
-﻿<div class="row @ClassName1 mx-1 justify-content-between">
-    <span class="oi oi-check"></span>
-    <div class="col-7">
-        <h4 class="text-black-50">@Name <span>@HtmlName</span></h4>
-    </div>
-    <div class="col-4">
-        <h4 class="@ClassName2">@Val @Units <span>@HtmlUnits</span></h4>
-    </div>
-</div>
+﻿    
+<table class="table intresult" style="width:100%">
+        <tbody>
+            <tr class="row justify-content-between">
+                <td width="60%" align="left" class="col-xs-7 d-block">
+                    <div class="text-black-50">@Name <span>@HtmlName</span></div>
+                </td>
+                <td width="10%" align="right" class="col-xs-1 d-block">
+                    @Symbol
+                </td>
+                <td width="30%" align="right" class="col-xs-4 d-block">
+                    <div class="@ClassName2">@Val @Units <span>@HtmlUnits</span></div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
 @code{
     [Parameter]
@@ -23,4 +30,6 @@
     public RenderFragment HtmlName { get; set; }
     [Parameter]
     public RenderFragment HtmlUnits { get; set; }
+    [Parameter]
+    public RenderFragment Symbol { get; set; }
 }

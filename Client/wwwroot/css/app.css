@@ -226,3 +226,6 @@ app {
     margin:0 !important;
     text-align: center !important;
 }
+.table.intresult{
+    margin-bottom:0 !important;
+}

@@ -1,14 +1,28 @@
-﻿<div class="row @ClassName1 mx-1 justify-content-between">
-    <span class="oi oi-check"></span>
-    <div class="col-7">
-        <h4 class="text-black-50">@Name <span>@HtmlName</span></h4>
-    </div>
-    <div class="col-4">
-        <h4 class="@ClassName2">@Val @Units <span>@HtmlValue</span></h4>
-    </div>
-</div>
+﻿@using MathJaxBlazor 
+<MathJaxSettings Tex="TexSettings"></MathJaxSettings>
+<table class="table intresult" width="100%">
+    <tbody>
+        <tr class="row justify-content-between">
+            <td align="left" width="60%">
+                <div class="text-black-50">@Name <span>@HtmlName</span></div>
+            </td>
+            <td align="right" width="10%">
+                <MathJaxContentComponent>@Symbol</MathJaxContentComponent>
+            </td>
+            <td align="right" width="30%">
+                <div class="@ClassName2">@Val @Units <span>@HtmlValue</span></div>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 @code{
+    TexInputSettings TexSettings { get; set; } = new TexInputSettings();
+    protected override Task OnInitializedAsync()
+    {
+        TexSettings.InlineMath.Add(new string[] {"$","$" });
+        return base.OnInitializedAsync();
+    }
     [Parameter]
     public string Name { get; set; }
     [Parameter]
@@ -21,6 +35,8 @@
     public string ClassName2 { get; set; }
     [Parameter]
     public RenderFragment HtmlName { get; set; }
-    [Parameter] 
+    [Parameter]
     public RenderFragment HtmlValue { get; set; }
+    [Parameter]
+    public string Symbol { get; set; }
 }

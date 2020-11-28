@@ -1,13 +1,12 @@
-﻿@using MathJaxBlazor 
-<MathJaxSettings Tex="TexSettings"></MathJaxSettings>
-<table class="table intresult" width="100%">
+﻿
+<table class="table intresult" style="width:90%;margin:0 0.5rem 0 0.5rem">
     <tbody>
         <tr class="row justify-content-between">
             <td align="left" width="60%">
                 <div class="text-black-50">@Name <span>@HtmlName</span></div>
             </td>
             <td align="right" width="10%">
-                <MathJaxContentComponent>@Symbol</MathJaxContentComponent>
+                @Symbol
             </td>
             <td align="right" width="30%">
                 <div class="@ClassName2">@Val @Units <span>@HtmlValue</span></div>
@@ -17,12 +16,7 @@
 </table>
 
 @code{
-    TexInputSettings TexSettings { get; set; } = new TexInputSettings();
-    protected override Task OnInitializedAsync()
-    {
-        TexSettings.InlineMath.Add(new string[] {"$","$" });
-        return base.OnInitializedAsync();
-    }
+    
     [Parameter]
     public string Name { get; set; }
     [Parameter]

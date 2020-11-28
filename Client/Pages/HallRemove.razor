@@ -1,4 +1,5 @@
 ﻿@page "/hallremove"
+
 <div class="container-fluid">
     <h2 class="text-center">Удаление дыма из коридоров</h2>
     <hr class="my-2" />
@@ -90,59 +91,59 @@
 
         </div>
         @*//IntResultSingleDoubles*@
-        <div @attributes="@resultsAttr" class="col-lg-5 col-xl-5 mt-xl-3 overflow-auto" style="height:85vh">
+        <div @attributes="@resultsAttr" class="col-lg-5 col-xl-5 mt-xl-3 overflow-auto" style="height:80vh">
             <IntResultSingleDouble Name="Первый этаж системы" Val="@Network.First" Units=""></IntResultSingleDouble>
             <IntResultSingleDouble Name="Количество этажей системы" Val="@Network.Qu" Units=""></IntResultSingleDouble>
             <IntResultSingleDouble Name="Температура воздуха в помещении" Val="@Room.Climate.TempInside" Units="°C">
-                <Symbol>$T_{r}$</Symbol>
+                <Symbol>T<sub>r</sub></Symbol>
             </IntResultSingleDouble>
             <IntResultSingleDouble Name="Площадь пола помещения" Val="@Room.Area" Units="м²">
-                <Symbol>$F_{f}$</Symbol>
+                <Symbol>F<sub>f</sub></Symbol>
             </IntResultSingleDouble>
             <IntResultSingleDouble Name="Высота помещения" Val="@Room.Height" Units="м">
 
             </IntResultSingleDouble>
             <IntResultSingleDouble Name="Объём помещения" Val="@Room.Volume.RoundTo1()" Units="м³">
-                <Symbol>$V$</Symbol>
+                <Symbol>V</Symbol>
             </IntResultSingleDouble>
             <IntResultSingleDouble Name="Площадь поверхностей помещения" Val="@Room.Surface.RoundTo1()" Units="м²">
-                <Symbol>$F_{w}$</Symbol>
+                <Symbol>F<sub>w</sub></Symbol>
             </IntResultSingleDouble>
             <IntResultSingleDouble Name="Площадь проёмов помещения" Val="@Room.OpeningAreaSum.RoundTo2()" Units="м²" >
-                <Symbol>$A_{0}$</Symbol>
+                <Symbol>A<sub>0</sub></Symbol>
             </IntResultSingleDouble>
             <IntResultSingleDouble Name="Масса пожарной нагрузки помещения" Val="@Room.MaterialMass" Units="кг">
-                <Symbol>$M$</Symbol>
+                <Symbol>M</Symbol>
             </IntResultSingleDouble>
             <IntResultSingleDouble Name="Теплота сгорания материалов помещения" Val="@Room.MaterialHeatCombustion.RoundTo2()" Units="МДж/кг" >
-                <Symbol>$Q_{нср}$</Symbol>
+                <Symbol>Q<sub>нср</sub></Symbol>
             </IntResultSingleDouble>
             <IntResultSingleDouble Name="Температура воздуха в коридоре" Val="@Hall.Climate.TempInside" Units="°C">
-                <Symbol>$T_{r}$</Symbol>
+                <Symbol>T<sub>r</sub></Symbol>
             </IntResultSingleDouble>
             <IntResultSingleDouble Name="Площадь коридора" Val="@Hall.Area" Units="м²">
-                <Symbol>$A_{c}$</Symbol>
+                <Symbol>A<sub>с</sub></Symbol>
             </IntResultSingleDouble>
             <IntResultSingleDouble Name="Длина коридора" Val="@Hall.Length" Units="м">
-                <Symbol>$l_{c}$</Symbol>
+                <Symbol>l<sub>с</sub></Symbol>
             </IntResultSingleDouble>
             <IntResultSingleDouble Name="Высота коридора" Val="@Hall.Height" Units="м">
-                <Symbol>$H_{h}$</Symbol>
+                <Symbol>H<sub>h</sub></Symbol>
             </IntResultSingleDouble>
             <IntResultGroup Name="Размеры двери на выходе из коридора" Val1="@Hall.Door.Width" Val2="@Hall.Door.Height">
 
             </IntResultGroup>
-            <IntResultSingleDouble Name="Площадь двери на выходе из коридора" Val="@Hall.Door.Area" Units="м²">
-                <Symbol>$A_{d}$</Symbol>
+            <IntResultSingleDouble Name="Площадь двери на выходе из коридора" Val="@Hall.Door.Area.RoundTo2()" Units="м²">
+                <Symbol>A<sub>d</sub></Symbol>
             </IntResultSingleDouble>
             <IntResultSingleDouble ClassName1="text-danger" ClassName2="text-danger" Name="Удельная пож. нагр. к площади" Val="@Room.g0.RoundTo2()" Units="кг/м²">
-                <Symbol>$g_{0}$</Symbol>
+                <Symbol>g<sub>0</sub></Symbol>
             </IntResultSingleDouble>
             <IntResultSingleDouble ClassName1="text-danger" ClassName2="text-danger" Name="Удельная пож. нагр. к поверхности" Val="@Room.gk.RoundTo2()" Units="кг/м²">
-                <Symbol>$g_{k}$</Symbol>
+                <Symbol>g<sub>k</sub></Symbol>
             </IntResultSingleDouble>
             <IntResultSingleDouble ClassName1="text-danger" ClassName2="text-danger" Name="Критическая пож. нагр." Val="@Room.gcrit.RoundTo2()" Units="кг/м²">
-                <Symbol>$g_{crit}$</Symbol>
+                <Symbol>g<sub>crit</sub></Symbol>
             </IntResultSingleDouble>
             @if (Room.gk > Room.gcrit && !Double.IsInfinity(Room.gk) && !Double.IsInfinity(Room.gcrit))
             {
@@ -158,22 +159,22 @@
             }
             <IntResultSingleDouble Name="Проёмность помещения" Val="@Room.OpeningRoomVal.RoundTo2()">
                 <HtmlUnits>м<sup class="small">1/2</sup></HtmlUnits>
-                <Symbol>$П$</Symbol>
+                <Symbol>П</Symbol>
             </IntResultSingleDouble>
             <IntResultSingleDouble Name="Кол-во воздуха для полного сгорания" Val="@Room.FlowAirCompleteCombustion.RoundTo2()" Units="м³" >
-                <Symbol>$V_{0}$</Symbol>
+                <Symbol>V<sub>0</sub></Symbol>
             </IntResultSingleDouble>
-            <IntResultSingleDouble Name="Макс. темп-ра в помещении" Val="@Room.T0max.RoundTo1().ToCelsius()" Units="°C" >
-                <Symbol>$T_{max0}$</Symbol>
+            <IntResultSingleDouble Name="Макс. темп-ра в помещении" Val="@Room.T0max.ToCelsius().RoundTo1()" Units="°C" >
+                <Symbol>T<sub>max0</sub></Symbol>
             </IntResultSingleDouble>
-            <IntResultSingleDouble Name="Температура дыма вытекающего из помещения в коридор" Val="@Room.T0.RoundTo1().ToCelsius()" Units="°C" >
-                <Symbol>$T_{0}$</Symbol>
+            <IntResultSingleDouble Name="Температура дыма вытекающего из помещения в коридор" Val="@Room.T0.ToCelsius().RoundTo1()" Units="°C" >
+                <Symbol>T<sub>0</sub></Symbol>
             </IntResultSingleDouble>
-            <IntResultSingleDouble Name="Температура дыма в коридоре" Val="@Hall.Tsm.RoundTo1().ToCelsius()" Units="°C" >
-                <Symbol>$T_{sm}$</Symbol>
+            <IntResultSingleDouble Name="Температура дыма в коридоре" Val="@Hall.Tsm.ToCelsius().RoundTo1()" Units="°C" >
+                <Symbol>T<sub>sm</sub></Symbol>
             </IntResultSingleDouble>
             <IntResultSingleDouble Name="Расход удал. дыма" Val="@Hall.Gsm.RoundTo3()" Units="кг/с" >
-                <Symbol>$G_{sm}$</Symbol>
+                <Symbol>G<sub>sm</sub></Symbol>
             </IntResultSingleDouble>
             @if (ShowResult)
             {
@@ -216,7 +217,7 @@
                                 <td>@part.NetPart.Duct.Width.RoundTo0() x @part.NetPart.Duct.Height.RoundTo0()</td>
                                 @if (@part.NetPart.Valve != null)
                                 {
-                                    <td>@part.NetPart.Valve.Area</td>
+                                    <td>@part.NetPart.Valve.Area.RoundTo3()</td>
                                 }
                                 else
                                 {
@@ -244,10 +245,10 @@
                     <em>* если нужно учесть сопротивление воздуховодов и элементов сети, располагающихся на кровле здания, нужно к участку последнего этажа указать длину воздуховодов кровли и суммарный КМС элементов этого участка (участка кровли)</em>
                 </p>
                 <IntResultSingleDouble Name="Производительность вентилятора" Val="Network.Lv.RoundTo0()" Units="м³/ч">
-
+                    <Symbol>L<sub>v</sub></Symbol>
                 </IntResultSingleDouble>
                 <IntResultSingleDouble Name="Давление вентилятора, приведённое к стандартным условиям" Val="Network.Psv.RoundTo0()" Units="Па">
-
+                    <Symbol>P<sub>sv</sub></Symbol>
                 </IntResultSingleDouble>
             }
 

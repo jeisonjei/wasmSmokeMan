@@ -114,7 +114,7 @@
 
         </div>
         @*3rd row*@
-        <div @attributes="@resultAttr" class="col-lg-5 col-xl-5 mt-xl-3 overflow-auto" style="height:85vh">
+        <div @attributes="@resultAttr" class="col-lg-5 col-xl-5 mt-xl-3 overflow-auto" style="height:80vh">
             <IntResultSingleString Name="Холл на 1-ом этаже" Val="@(Elevator.WithHallOn1stFloor ? "Да" : "Нет")"></IntResultSingleString>
             <IntResultSingleDouble Name="Температура наружного воздуха" Val="Climate.TempOutside" Units="°C"></IntResultSingleDouble>
             <IntResultSingleDouble Name="Температура внутреннего воздуха" Val="Climate.TempInside" Units="°C"></IntResultSingleDouble>

@@ -16,7 +16,7 @@ using wasmSmokeMan.Shared.SupplyStaircase.SemanticObjects;
 using wasmSmokeMan.Shared.SupplyStaircase.SimpleObjects;
 using wasmSmokeMan.Shared.RemoveHall;
 using Climate1 = wasmSmokeMan.Shared.SupplyStaircase.NaturalPhenomenaIndependent.Climate;
-using Climate2=wasmSmokeMan.Shared.RemoveHall.Climate;
+using Climate2 = wasmSmokeMan.Shared.RemoveHall.Climate;
 using Climate3 = wasmSmokeMan.Shared.SupplyElevator.Climate;
 using Window = wasmSmokeMan.Shared.SupplyStaircase.SimpleObjects.Window;
 using Floors1 = wasmSmokeMan.Shared.SupplyStaircase.SemanticObjects.Floors;
@@ -30,9 +30,9 @@ namespace wasmSmokeMan.Client
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            builder.RootComponents.Add<App>("app");
+            builder.RootComponents.Add<App>("#app");
             builder.Services.AddScoped(
-                sp => new HttpClient {BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)});
+                sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             //регистрация классов, которые относятся к расчёту ПОДПОР В ЛЕСТНИЧНУЮ КЛЕТКУ. Функциональность некоторых классов повторяется, но решено всё равно для каждого расчёта создавать свои классы чтобы избежать путаницы
             Climate1 climate1 = new Climate1(-25, 20, 2);
             Floors1 floors1 = new Floors1(1, 10);
@@ -53,13 +53,13 @@ namespace wasmSmokeMan.Client
             builder.Services.AddSingleton(methodsSupplyStair);
             //регистрация классов, которые относятся к расчёту ДЫМОУДАЛЕНИЕ ИЗ КОРИДОРОВ
             Climate2 climate2 = new Climate2(26, 26, 2);
-            Opening opening=new Opening(1,2);
-            List<Opening> openings=new List<Opening>();
+            Opening opening = new Opening(1, 2);
+            List<Opening> openings = new List<Opening>();
             openings.Add(opening);
-            Room room=new Room(25,2.8,openings,14,400,climate2);
-            DoorHall doorHall=new DoorHall(1.1,2.1,DoorHall.Type.Usual,climate2);
-            Hall hall=new Hall(30,15,2.8,doorHall,room,climate2,BuildingType.Residential);
-            Network network=new Network(1,10,hall,climate2);
+            Room room = new Room(25, 2.8, openings, 14, 400, climate2);
+            DoorHall doorHall = new DoorHall(1.1, 2.1, DoorHall.Type.Usual, climate2);
+            Hall hall = new Hall(30, 15, 2.8, doorHall, room, climate2, BuildingType.Residential);
+            Network network = new Network(1, 10, hall, climate2);
             builder.Services.AddSingleton(climate2);
             builder.Services.AddSingleton(opening);
             builder.Services.AddSingleton(room);

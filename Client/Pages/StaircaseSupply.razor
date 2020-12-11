@@ -93,22 +93,54 @@
             </div>
         </div>
         <div @attributes="@resultsAttr" class="col-lg-5 col-xl-5 overflow-auto" style="height:85vh">
-            <IntResultSingleDouble Name="Температура наружного воздуха" Val="@Math.Round(cl.TempOutside,2)"></IntResultSingleDouble>
-            <IntResultSingleDouble Name="Температура внутреннего воздуха" Val="@Math.Round(cl.TempInside,2)"></IntResultSingleDouble>
-            <IntResultSingleDouble Name="Температура приточного воздуха" Val="@Math.Round(cl.TempSupply,2)"></IntResultSingleDouble>
-            <IntResultSingleDouble Name="Плотность наружного воздуха" Val="@Math.Round(cl.DensityOutside,2)"></IntResultSingleDouble>
-            <IntResultSingleDouble Name="Плотность внутреннего воздуха" Val="@Math.Round(cl.DensityInside,2)"></IntResultSingleDouble>
-            <IntResultSingleDouble Name="Плотность приточного воздуха" Val="@Math.Round(cl.DensitySupply,3)" Units="кг/м³"></IntResultSingleDouble>
-            <IntResultSingleDouble Name="Первый этаж" Val="@fl.First" />
-            <IntResultSingleDouble Name="Количество этажей" Val="@fl.Qu" />
-            <IntResultGroup Name="Наружная дверь" Val1="@dro.Width" Val2="@dro.Height" Units="м"></IntResultGroup>
-            <IntResultGroup Name="Внутренняя дверь" Val1="@dri.Width" Val2="@dri.Height" Units="м"></IntResultGroup>
-            <IntResultSingleDouble Name="Сопротивление дымопроницанию двери" Val="@Math.Round(dri.SmokeResistance,0)" Units="м³/кг"></IntResultSingleDouble>
-            <IntResultGroup Name="Окна на этажах ЛК" Val1="@w.Width" Val2="@w.Height" Units="м"></IntResultGroup>
-            <IntResultSingleDouble Name="Давление снаружи" Val="@Math.Round(p.OutsideDeltaPMax,1)" Units="Па"></IntResultSingleDouble>
-            <IntResultSingleDouble Name="Площадь ЛК" Val="@st.Area" Units="м²"></IntResultSingleDouble>
-            <IntResultSingleDouble Name="Количество дверей ЛК" Val="@st.QuDoorOutside"></IntResultSingleDouble>
-            <IntResultSingleDouble Name="Тип тамбура ЛК" Val="@st.KsiR"></IntResultSingleDouble>
+            <IntResultSingleDouble Name="Температура наружного воздуха" Val="@Math.Round(cl.TempOutside,2)">
+                <Symbol>T<sub>a</sub></Symbol>
+            </IntResultSingleDouble>
+            <IntResultSingleDouble Name="Температура внутреннего воздуха" Val="@Math.Round(cl.TempInside,2)">
+                <Symbol>T<sub>r</sub></Symbol>
+            </IntResultSingleDouble>
+            <IntResultSingleDouble Name="Температура приточного воздуха" Val="@Math.Round(cl.TempSupply,2)">
+                <Symbol>T<sub>s</sub></Symbol>
+            </IntResultSingleDouble>
+            <IntResultSingleDouble Name="Плотность наружного воздуха" Val="@Math.Round(cl.DensityOutside,2)">
+                <Symbol>⍴<sub>a</sub></Symbol>
+            </IntResultSingleDouble>
+            <IntResultSingleDouble Name="Плотность внутреннего воздуха" Val="@Math.Round(cl.DensityInside,2)">
+                <Symbol>⍴<sub>r</sub></Symbol>
+            </IntResultSingleDouble>
+            <IntResultSingleDouble Name="Плотность приточного воздуха" Val="@Math.Round(cl.DensitySupply,3)" Units="кг/м³">
+                <Symbol>⍴<sub>s</sub></Symbol>
+            </IntResultSingleDouble>
+            <IntResultSingleDouble Name="Первый этаж" Val="@fl.First" >
+
+            </IntResultSingleDouble>
+            <IntResultSingleDouble Name="Количество этажей" Val="@fl.Qu" >
+
+            </IntResultSingleDouble>
+            <IntResultGroup Name="Наружная дверь" Val1="@dro.Width" Val2="@dro.Height" Units="м">
+
+            </IntResultGroup>
+            <IntResultGroup Name="Внутренняя дверь" Val1="@dri.Width" Val2="@dri.Height" Units="м">
+
+            </IntResultGroup>
+            <IntResultSingleDouble Name="Сопротивление дымопроницанию двери" Val="@dri.SmokeResistance.RoundTo0()" Units="м³/кг">
+                <Symbol>S<sub>dsm</sub></Symbol>
+            </IntResultSingleDouble>
+            <IntResultGroup Name="Окна на этажах ЛК" Val1="@w.Width" Val2="@w.Height" Units="м">
+
+            </IntResultGroup>
+            <IntResultSingleDouble Name="Давление снаружи" Val="@Math.Round(p.OutsideDeltaPMax,1)" Units="Па">
+
+            </IntResultSingleDouble>
+            <IntResultSingleDouble Name="Площадь ЛК" Val="@st.Area" Units="м²">
+
+            </IntResultSingleDouble>
+            <IntResultSingleDouble Name="Количество дверей ЛК" Val="@st.QuDoorOutside">
+
+            </IntResultSingleDouble>
+            <IntResultSingleDouble Name="Тип тамбура ЛК" Val="@st.KsiR">
+
+            </IntResultSingleDouble>
             <table id="table" class="table">
                 <thead class="thead-light">
                     <tr>
@@ -132,7 +164,9 @@
 
 
             @*---*@
-            <IntResultSingleDouble Name="Производительность вентилятора" Val="@(Math.Round(m.Lv))" Units="м³/ч"></IntResultSingleDouble>
+            <IntResultSingleDouble Name="Производительность вентилятора" Val="@(Math.Round(m.Lv))" Units="м³/ч">
+
+            </IntResultSingleDouble>
 
         </div>
     </div>
@@ -149,6 +183,7 @@
 @using wasmSmokeMan.Shared.SupplyStaircase.NaturalPhenomenaIndependent
 @using wasmSmokeMan.Shared.SupplyStaircase.SemanticObjects
 @using wasmSmokeMan.Shared.SupplyStaircase.SimpleObjects
+@using wasmSmokeMan.Shared.SupplyElevator.Helpers
 @inject Climate cl
 @inject Floors fl
 @inject DoorOutside dro

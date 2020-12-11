@@ -31,6 +31,7 @@
                 <div class="mt-2">
                     <button class="btn btn-outline-danger btn-lg" @onclick="AssignShowResult">Расчёт</button>
                 </div>
+                
             </div>
         </div>
         <div class="col-md-8 col-lg-4 col-xl-4 overflow-auto" style="height:85vh">
@@ -41,7 +42,7 @@
                             @*inputs*@
                             <InpSingle Label="@_10301_1FieldName" PopTitle="@PopTitle" PopContent="@_10301_1PopContent" NumberChanged="@_10301_1AssignRoomArea" />
                             <InpSingle Label="@_10301_2FieldName" PopTitle="@PopTitle" PopContent="@_10301_2PopContent" NumberChanged="@_10301_2AssignRoomHeight" />
-                            <ChipsInputHallRemove Label="@_10601FieldName" PopTitle="@PopTitle" PopContent="@_10601PopContent" Chips="@_10601Chips" ShowInputOutline="true" EnableBackspaceRemove="true" OnChipsAdded="_10601AssignOpeningArea" OnFocus="ShowToggleOpenings" OnFocusOut="HideToggleOpenings"></ChipsInputHallRemove>
+                            <ChipsInputHallRemove Label="@_10601FieldName" PopTitle="@PopTitle" PopContent="@_10601PopContent" Chips="@_10601Chips" ShowInputOutline="true" EnableBackspaceRemove="true" OnChipsAdded="AddOpening" OnChipsRemove="RemoveOpening" OnFocus="ShowToggleOpenings" OnFocusOut="HideToggleOpenings"></ChipsInputHallRemove>
                             <_10601IntReport Items="@Room.Openings" Show="@ShowOpenings"></_10601IntReport>
                             <InpSingle Label="@_1301FieldName" PopTitle="@PopTitle" PopContent="@_1301PopContent" PopRef="@_1301PopRef" PopLinkText="@_1301PopLink" PopLinkUri="@_1301PopUri" NumberChanged="_1301AssignTempRoomCelsuis" />
                             <InpSingle Label="@_10201FieldName" PopTitle="@PopTitle" PopContent="@_10201PopContent" NumberChanged="@_10201AssignMassMaterial" />
@@ -101,7 +102,7 @@
                 <Symbol>F<sub>f</sub></Symbol>
             </IntResultSingleDouble>
             <IntResultSingleDouble Name="Высота помещения" Val="@Room.Height" Units="м">
-
+                <Symbol>H<sub>r</sub></Symbol>
             </IntResultSingleDouble>
             <IntResultSingleDouble Name="Объём помещения" Val="@Room.Volume.RoundTo1()" Units="м³">
                 <Symbol>V</Symbol>
@@ -109,13 +110,13 @@
             <IntResultSingleDouble Name="Площадь поверхностей помещения" Val="@Room.Surface.RoundTo1()" Units="м²">
                 <Symbol>F<sub>w</sub></Symbol>
             </IntResultSingleDouble>
-            <IntResultSingleDouble Name="Площадь проёмов помещения" Val="@Room.OpeningAreaSum.RoundTo2()" Units="м²" >
+            <IntResultSingleDouble Name="Площадь проёмов помещения" Val="@Room.OpeningAreaSum.RoundTo2()" Units="м²">
                 <Symbol>A<sub>0</sub></Symbol>
             </IntResultSingleDouble>
             <IntResultSingleDouble Name="Масса пожарной нагрузки помещения" Val="@Room.MaterialMass" Units="кг">
                 <Symbol>M</Symbol>
             </IntResultSingleDouble>
-            <IntResultSingleDouble Name="Теплота сгорания материалов помещения" Val="@Room.MaterialHeatCombustion.RoundTo2()" Units="МДж/кг" >
+            <IntResultSingleDouble Name="Теплота сгорания материалов помещения" Val="@Room.MaterialHeatCombustion.RoundTo2()" Units="МДж/кг">
                 <Symbol>Q<sub>нср</sub></Symbol>
             </IntResultSingleDouble>
             <IntResultSingleDouble Name="Температура воздуха в коридоре" Val="@Hall.Climate.TempInside" Units="°C">
@@ -161,19 +162,19 @@
                 <HtmlUnits>м<sup class="small">1/2</sup></HtmlUnits>
                 <Symbol>П</Symbol>
             </IntResultSingleDouble>
-            <IntResultSingleDouble Name="Кол-во воздуха для полного сгорания" Val="@Room.FlowAirCompleteCombustion.RoundTo2()" Units="м³" >
+            <IntResultSingleDouble Name="Кол-во воздуха для полного сгорания" Val="@Room.FlowAirCompleteCombustion.RoundTo2()" Units="м³">
                 <Symbol>V<sub>0</sub></Symbol>
             </IntResultSingleDouble>
-            <IntResultSingleDouble Name="Макс. темп-ра в помещении" Val="@Room.T0max.ToCelsius().RoundTo1()" Units="°C" >
+            <IntResultSingleDouble Name="Макс. темп-ра в помещении" Val="@Room.T0max.ToCelsius().RoundTo1()" Units="°C">
                 <Symbol>T<sub>max0</sub></Symbol>
             </IntResultSingleDouble>
-            <IntResultSingleDouble Name="Температура дыма вытекающего из помещения в коридор" Val="@Room.T0.ToCelsius().RoundTo1()" Units="°C" >
+            <IntResultSingleDouble Name="Температура дыма вытекающего из помещения в коридор" Val="@Room.T0.ToCelsius().RoundTo1()" Units="°C">
                 <Symbol>T<sub>0</sub></Symbol>
             </IntResultSingleDouble>
-            <IntResultSingleDouble Name="Температура дыма в коридоре" Val="@Hall.Tsm.ToCelsius().RoundTo1()" Units="°C" >
+            <IntResultSingleDouble Name="Температура дыма в коридоре" Val="@Hall.Tsm.ToCelsius().RoundTo1()" Units="°C">
                 <Symbol>T<sub>sm</sub></Symbol>
             </IntResultSingleDouble>
-            <IntResultSingleDouble Name="Расход удал. дыма" Val="@Hall.Gsm.RoundTo3()" Units="кг/с" >
+            <IntResultSingleDouble Name="Расход удал. дыма" Val="@Hall.Gsm.RoundTo3()" Units="кг/с">
                 <Symbol>G<sub>sm</sub></Symbol>
             </IntResultSingleDouble>
             @if (ShowResult)
@@ -260,52 +261,20 @@
 @using System.Text
 @using wasmSmokeMan.Shared.RemoveHall
 @using wasmSmokeMan.Shared.SupplyStaircase.Functions
+@using CurrieTechnologies.Razor.Clipboard
+@inject ClipboardService Clipboard
 @inject IMatToaster Toast
 @inject Climate Climate;
-@inject Opening Opening;
 @inject Room Room;
 @inject Hall Hall;
 @inject Network Network;
 @*//code*@
 
 @code{
+    #region vars
     Dictionary<string, object> chipsNetworkAttributes;
     Dictionary<string, object> resultsAttr;
-
-    protected override void OnInitialized()
-    {
-        chipsNetworkAttributes = new Dictionary<string, object>();
-        chipsNetworkAttributes.Add("id", "chipsnetwork");
-        chipsNetworkAttributes.Add("data-toggle", "tooltip");
-        chipsNetworkAttributes.Add("data-placement", "top");
-        chipsNetworkAttributes.Add("data-title", "<div><div><div class='text-left'><strong>Формат ввода этажа</strong></div><div class='text-left'><code>[номер этажа]</code>;</div><div class='text-left'><code>[высота этажа]</code>;</div><div class='text-left'><code>[ширина воздуховода]</code>x<code>[высота воздуховода]</code>;</div><div class='text-left'><code>[дополнительная длина воздуховодов]</code>;</div><div class='text-left'><code>[сумма КМС на участке]</code>;</div><div class='text-left'><code>[ширина клапана]</code>x<code>[высота клапана]</code>(при наличии);</div></div><div><div class='text-left'><strong>Формат ввода диапазона этажей</strong></div><div class='text-left'><code>[первый этаж]</code>-<code>[последний этаж]</code>;</div><div class='text-left'><code>[высота этажей]</code>;</div><div class='text-left'><code>[ширина воздуховода]</code>x<code>[высота воздуховода]</code>;</div><div class='text-left'><code>[дополнительная длина воздуховодов]</code>;</div><div class='text-left'><code>[сумма КМС на участке]</code>;</div><div class='text-left'><code>[ширина клапана]</code>x<code>[высота клапана]</code>(при наличии);</div></div></div>");
-        resultsAttr = new Dictionary<string, object>();
-        resultsAttr.Add("id", "results");
-        BuildingTypeAttr1 = new Dictionary<string, object>();
-        BuildingTypeAttr1.Add("data-toggle", "tooltip");
-        BuildingTypeAttr1.Add("data-placement", "top");
-        BuildingTypeAttr1.Add("data-title", "Жилое здание");
-        BuildingTypeAttr2 = new Dictionary<string, object>();
-        BuildingTypeAttr2.Add("data-toggle", "tooltip");
-        BuildingTypeAttr2.Add("data-placement", "top");
-        BuildingTypeAttr2.Add("data-title", "Общественное здание");
-    }
-
-    public bool Show { get; set; }
-
-    void ShowToggle()
-    {
-        Show = true;
-    }
-
-    void HideToggle()
-    {
-        Show = false;
-    }
-
-
     List<string> _10601Chips { get; set; } = new List<string>();
-
     List<Sel.Item> _10202Items { get; set; } = new List<Sel.Item>()
 {
         new Sel.Item
@@ -416,9 +385,48 @@
             Val = 18.4
         },
     };
+    public bool Show { get; set; }
+    string comparer = "";
+    string textValue = "This is simple string";
+    #endregion
+    #region lifecicle
+    protected override void OnInitialized()
+    {
+        chipsNetworkAttributes = new Dictionary<string, object>();
+        chipsNetworkAttributes.Add("id", "chipsnetwork");
+        chipsNetworkAttributes.Add("data-toggle", "tooltip");
+        chipsNetworkAttributes.Add("data-placement", "top");
+        chipsNetworkAttributes.Add("data-title", "<div><div><div class='text-left'><strong>Формат ввода этажа</strong></div><div class='text-left'><code>[номер этажа]</code>;</div><div class='text-left'><code>[высота этажа]</code>;</div><div class='text-left'><code>[ширина воздуховода]</code>x<code>[высота воздуховода]</code>;</div><div class='text-left'><code>[дополнительная длина воздуховодов]</code>;</div><div class='text-left'><code>[сумма КМС на участке]</code>;</div><div class='text-left'><code>[ширина клапана]</code>x<code>[высота клапана]</code>(необяз., при наличии);</div></div><div><div class='text-left'><strong>Формат ввода диапазона этажей</strong></div><div class='text-left'><code>[первый этаж]</code>-<code>[последний этаж]</code>;</div><div class='text-left'><code>[высота этажей]</code>;</div><div class='text-left'><code>[ширина воздуховода]</code>x<code>[высота воздуховода]</code>;</div><div class='text-left'><code>[дополнительная длина воздуховодов]</code>;</div><div class='text-left'><code>[сумма КМС на участке]</code>;</div><div class='text-left'><code>[ширина клапана]</code>x<code>[высота клапана]</code>(необяз., при наличии);</div><div class='text-left'>*строка должна заканчиваться знаком точка-с-запятой \";\"</div></div></div>");
+        resultsAttr = new Dictionary<string, object>();
+        resultsAttr.Add("id", "results");
+        BuildingTypeAttr1 = new Dictionary<string, object>();
+        BuildingTypeAttr1.Add("data-toggle", "tooltip");
+        BuildingTypeAttr1.Add("data-placement", "top");
+        BuildingTypeAttr1.Add("data-title", "Жилое здание");
+        BuildingTypeAttr2 = new Dictionary<string, object>();
+        BuildingTypeAttr2.Add("data-toggle", "tooltip");
+        BuildingTypeAttr2.Add("data-placement", "top");
+        BuildingTypeAttr2.Add("data-title", "Общественное здание");
+    }
+    protected override async Task OnAfterRenderAsync(bool first)
 
-    //fields
+    {
+        await Js.InvokeVoidAsync("funcs.pop");
+        await Js.InvokeVoidAsync("funcs.selectpicker");
+        await Js.InvokeVoidAsync("funcs.tooltipNetwork");
+    }
 
+    #endregion
+
+    void ShowToggle()
+    {
+        Show = true;
+    }
+
+    void HideToggle()
+    {
+        Show = false;
+    }
     #region fields
 
     public string PopTitle { get; set; } = "Информация";
@@ -473,47 +481,34 @@
 
     #endregion
 
-    string comparer = "";
 
-    protected override async Task OnAfterRenderAsync(bool first)
-
-    {
-        await Js.InvokeVoidAsync("funcs.pop");
-        await Js.InvokeVoidAsync("funcs.selectpicker");
-        await Js.InvokeVoidAsync("funcs.tooltipNetwork");
-    }
-
-
-    void _10601AssignOpeningArea()
+    #region add&removeOpening
+    void AddOpening()
     {
         try
         {
-            //если при вызове метода в поле ничего нет, то ничего не происходит, просто коллекция очищается
-            if (_10601Chips.Count == 0)
-            {
-                Room.Openings.Clear();
-            }
-            //в этом блоке при каждом добавлении или удалении элемента в коллекцию _10601List добавляются и обрабатываются все элементы из коллекции _10601Chips
-            //то есть строка разделяется по разделителю ; затем преобразуется в double и для элемента Item1 кортежа вычисляется площадь путём перемножения того, что было до знака ; и того, что было после этого знака
-            else
-            {
-                Room.Openings.Clear();
-                foreach (var item in _10601Chips)
-                {
-                    double openingWidth = item.Split(";")[0].ToDouble();
-                    double openingHeight = item.Split(";")[1].ToDouble();
-                    Room.Openings.Add(new Opening(openingWidth, openingHeight));
-                }
-            }
+            double openingWidth = _10601Chips.Last().Split(";")[0].ToDouble();
+            double openingHeight = _10601Chips.Last().Split(";")[1].ToDouble();
+            Room.Openings.Add(new Opening(openingWidth, openingHeight));
         }
         catch (Exception ex)
         {
             Toast.Add(ex.Message, MatToastType.Danger);
         }
     }
+    void RemoveOpening()
+    {
+        try
+        {
+            Room.Openings.Remove(Room.Openings.Last());
+        }
+        catch (Exception ex)
+        {
 
-    //assignings
-
+            Toast.Add(ex.Message, MatToastType.Danger);
+        }
+    }
+    #endregion
     #region hall
 
     void _1604_1AssignHeightCorridor(string heightCorridor)
@@ -532,7 +527,6 @@
     }
 
     #endregion
-
     #region room
 
     void _1301AssignTempRoomCelsuis(string tempRoom)
@@ -551,7 +545,6 @@
     }
 
     #endregion
-
     #region doorHall
 
     void _1702AssignDoorWidth(string doorWidth)
@@ -575,7 +568,6 @@
     }
 
     #endregion
-
     #region network
 
     private void AssignFirstFloor(string first)
@@ -592,8 +584,17 @@
     //при каждом добавлении обрабатывается только последний элемент в списке. ранее в supplystaircase.razor похоже при каждом добавлении похоже обрабатывались все элементы, вроде бы это не нужно
     private void AddToNetwork()
     {
+        bool exceptionOccured = false;
         try
         {
+            if (!ChipsNetwork.Last().Contains(";"))
+            {
+                throw new FormatException("Значения параметров участка сети (индекс этажа, высота этажа, размер воздуховода итд) должны разделяться знаком точка-с-запятой \";\"");
+            }
+            if (ChipsNetwork.Last().Split(";").Count()!=6 && ChipsNetwork.Last().Split(";").Count() != 7)
+            {
+                throw new FormatException("Строка введена в неверном формате, возможно был пропущен какой-то элемент. Строка должна заканчиваться знаком точка-с-запятой \";\"");
+            }
             //проверка на наличие элементов в списке строк ChipsNetwork для того, чтобы избежать появлении ошибки при обращении к пустому списку
             if (ChipsNetwork.Count > 0)
             {
@@ -707,7 +708,17 @@
         }
         catch (Exception ex)
         {
-            Toast.Add(ex.Message, MatToastType.Danger);
+            exceptionOccured = true;
+            Toast.Add($"{ex.Message}", MatToastType.Danger);
+            Console.WriteLine($"ERROR HRESULT : {ex.HResult}");
+            Console.WriteLine($"ERROR SOURCE : {ex.Source}");
+            Console.WriteLine($"MODULE : {ex.TargetSite.Module}");
+            Console.WriteLine($"METHOD NAME : {ex.TargetSite.Name}");
+            Console.WriteLine($"METHOD NAME : {ex.StackTrace}");
+        }
+        finally
+        {
+            if (exceptionOccured) ChipsNetwork.Remove(ChipsNetwork.Last());
         }
     }
 
@@ -733,7 +744,6 @@
     }
 
     #endregion
-
     #region showresult
 
     bool ShowResult { get; set; }
@@ -760,7 +770,6 @@
     }
 
     #endregion
-
     #region showOpeningsReportTable
 
     bool ShowOpenings { get; set; }
@@ -776,7 +785,6 @@
     }
 
     #endregion
-
     #region buildingType
 
     public int BuildingType { get; set; }
@@ -800,7 +808,6 @@
     #endregion
 
     //пока откажемся от идеи отслеживать изменения - пока что неясно как это сделать без потери скорости работы программы
-
     #region trackChanges
 
     void TrackChanges()

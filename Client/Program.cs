@@ -1,27 +1,23 @@
-using System;
-using System.Net.Http;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Text;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using MatBlazor;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
+using wasmSmokeMan.Shared.RemoveHall;
+using wasmSmokeMan.Shared.SupplyElevator;
 using wasmSmokeMan.Shared.SupplyStaircase.CompoundObjects;
 using wasmSmokeMan.Shared.SupplyStaircase.Functions;
 using wasmSmokeMan.Shared.SupplyStaircase.NaturalPhenomenaDependent;
-using wasmSmokeMan.Shared.SupplyStaircase.NaturalPhenomenaIndependent;
-using wasmSmokeMan.Shared.SupplyStaircase.SemanticObjects;
 using wasmSmokeMan.Shared.SupplyStaircase.SimpleObjects;
-using wasmSmokeMan.Shared.RemoveHall;
 using Climate1 = wasmSmokeMan.Shared.SupplyStaircase.NaturalPhenomenaIndependent.Climate;
 using Climate2 = wasmSmokeMan.Shared.RemoveHall.Climate;
 using Climate3 = wasmSmokeMan.Shared.SupplyElevator.Climate;
-using Window = wasmSmokeMan.Shared.SupplyStaircase.SimpleObjects.Window;
 using Floors1 = wasmSmokeMan.Shared.SupplyStaircase.SemanticObjects.Floors;
 using Floors3 = wasmSmokeMan.Shared.SupplyElevator.Floors;
-using wasmSmokeMan.Shared.SupplyElevator;
+using Window = wasmSmokeMan.Shared.SupplyStaircase.SimpleObjects.Window;
+using CurrieTechnologies.Razor.Clipboard;
 
 namespace wasmSmokeMan.Client
 {
@@ -53,15 +49,12 @@ namespace wasmSmokeMan.Client
             builder.Services.AddSingleton(methodsSupplyStair);
             //регистрация классов, которые относятся к расчёту ДЫМОУДАЛЕНИЕ ИЗ КОРИДОРОВ
             Climate2 climate2 = new Climate2(26, 26, 2);
-            Opening opening = new Opening(1, 2);
             List<Opening> openings = new List<Opening>();
-            openings.Add(opening);
             Room room = new Room(25, 2.8, openings, 14, 400, climate2);
             DoorHall doorHall = new DoorHall(1.1, 2.1, DoorHall.Type.Usual, climate2);
             Hall hall = new Hall(30, 15, 2.8, doorHall, room, climate2, BuildingType.Residential);
             Network network = new Network(1, 10, hall, climate2);
             builder.Services.AddSingleton(climate2);
-            builder.Services.AddSingleton(opening);
             builder.Services.AddSingleton(room);
             builder.Services.AddSingleton(doorHall);
             builder.Services.AddSingleton(hall);
@@ -87,6 +80,7 @@ namespace wasmSmokeMan.Client
                 config.MaximumOpacity = 100;
                 config.VisibleStateDuration = 4000;
             });
+            builder.Services.AddClipboard();
             await builder.Build().RunAsync();
         }
     }

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using wasmSmokeMan.Shared.SupplyElevator;
-
+using wasmSmokeMan.Shared.SupplyElevator.Helpers;
 
 namespace wasmSmokeMan.Client.Pages
 {

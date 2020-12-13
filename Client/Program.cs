@@ -53,7 +53,7 @@ namespace wasmSmokeMan.Client
             Room room = new Room(25, 2.8, openings, 14, 400, climate2);
             DoorHall doorHall = new DoorHall(1.1, 2.1, DoorHall.Type.Usual, climate2);
             Hall hall = new Hall(30, 15, 2.8, doorHall, room, climate2, BuildingType.Residential);
-            Network network = new Network(1, 10, hall, climate2);
+            Network network = new Network(1,10,0,climate2,hall);
             builder.Services.AddSingleton(climate2);
             builder.Services.AddSingleton(room);
             builder.Services.AddSingleton(doorHall);

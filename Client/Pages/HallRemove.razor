@@ -79,8 +79,8 @@
                             <InpGroup Label="@_1702_1703FieldName" PopTitle="@PopTitle" PopContent="@_1702_1703PopContent" Number1Changed="_1702AssignDoorWidth" Number2Changed="_1703AssignDoorHeight" />
                         </div>
                         <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                            <InpSingle Label="@_204FirstFloorFN" PopTitle="@PopTitle" PopContent="@_204FirstFloorPC" NumberChanged="@AssignFirstFloor"></InpSingle>
-                            <InpSingle Label="@_203QuFloorsFN" PopTitle="@PopTitle" PopContent="@_203QuFloorsPC" NumberChanged="@AssignQuFloors"></InpSingle>
+                            <InpGroup Label="Первый и последний этажи" PopTitle="@PopTitle" PopContent="@_204FirstFloorPC" Number1Changed="@AssignFirstFloor" Number2Changed="@AssignLastFloor"></InpGroup>
+                            <InpSingle Label="Отметка первого этажа" PopTitle="@PopTitle" PopContent="@FirstFloorLevelPC" NumberChanged="@AssignFirstFloorLevel"></InpSingle>
                             <ChipsInputHallRemove DivAttributes="@chipsNetworkAttributes" Chips="@ChipsNetwork" Label="@NetworkFieldName" PopTitle="@PopTitle" PopContent="@NetworkPopContent" OnChipsAdded="AddToNetwork" OnChipsRemove="RemoveFromNetwork"></ChipsInputHallRemove>
                             <IntReportTableNetwork Show="@true" System="@Network.System"></IntReportTableNetwork>
 
@@ -93,8 +93,9 @@
         </div>
         @*//IntResultSingleDoubles*@
         <div @attributes="@resultsAttr" class="col-lg-5 col-xl-5 mt-xl-3 overflow-auto" style="height:80vh">
-            <IntResultSingleDouble Name="Первый этаж системы" Val="@Network.First" Units=""></IntResultSingleDouble>
+            <IntResultSingleDouble Name="Первый этаж системы" Val="@Network.FirstFloorIndex" Units=""></IntResultSingleDouble>
             <IntResultSingleDouble Name="Количество этажей системы" Val="@Network.Qu" Units=""></IntResultSingleDouble>
+            <IntResultSingleDouble Name="Отметка первого этажа" Val="@Network.FirstFloorLevel" Units="м"></IntResultSingleDouble>
             <IntResultSingleDouble Name="Температура воздуха в помещении" Val="@Room.Climate.TempInside" Units="°C">
                 <Symbol>T<sub>r</sub></Symbol>
             </IntResultSingleDouble>
@@ -210,11 +211,11 @@
                             <td><em>Па</em></td>
                         </tr>
 
-                        @foreach (var part in Result.System.Values)
+                        @foreach (var part in Network.System.Values)
                         {
                             <tr>
                                 <td>@part.Floor.Index</td>
-                                <td>@part.Floor.Level.RoundTo2()</td>
+                                <td>@part.Floor.Level.RoundTo2()</td>0
                                 <td>@part.NetPart.Duct.Width.RoundTo0() x @part.NetPart.Duct.Height.RoundTo0()</td>
                                 @if (@part.NetPart.Valve != null)
                                 {
@@ -472,12 +473,13 @@
     public string _1702_1703PopContent { get; set; } = "Ширина и высота двери из коридора по пути эвакуации (например в лестничную клетку)";
     public string NetworkFieldName { get; set; } = "Сеть воздуховодов";
     public string NetworkPopContent { get; set; } = "......";
-    public string _203QuFloorsFN { get; set; } = "Количество этажей";
-    public string _203QuFloorsPC { get; set; } = "Общее количество этажей, которые обслуживаются системой дымоудаления";
+    public string _203LastFloorFN { get; set; } = "Индекс последнего этажа";
+    public string _203LastFloorPC { get; set; } = "Этаж, который является последним для системы дымоудаления";
     public string _204FirstFloorFN { get; set; } = "Индекс первого этажа";
     public string _204FirstFloorPC { get; set; } = "Этаж, который является для системы дымоудаления. В этом поле указывается индекс <code>1, 2, 3</code> или <code>-1, -2, -3</code> в случае, если этажи подземные. Индекс <code>0</code> не используется - для первого надземного этажа используется индекс <code>1</code>, а для первого подземного индекс <code>-1</code>";
     public string BuildingTypeFN { get; set; } = "Тип здания";
     public string BuildingTypePC { get; set; } = "Тип здания - жилое или общественное";
+    public string FirstFloorLevelPC { get; set; } = "Отметка первого этажа здания, если этаж подземный, отметка указывается со знаком минус (-)";
 
     #endregion
 
@@ -570,14 +572,18 @@
     #endregion
     #region network
 
-    private void AssignFirstFloor(string first)
+    private void AssignFirstFloor(string firstFloorIndex)
     {
-        Network.First = first.ToInt();
+        Network.FirstFloorIndex = firstFloorIndex.ToInt();
     }
 
-    private void AssignQuFloors(string qu)
+    private void AssignLastFloor(string lastFloorIndex)
     {
-        Network.Qu = qu.ToInt();
+        Network.LastFloorIndex = lastFloorIndex.ToInt();
+    }
+    private void AssignFirstFloorLevel(string firstFloorLevel)
+    {
+        Network.FirstFloorLevel = firstFloorLevel.ToDouble();
     }
 
     public List<string> ChipsNetwork { get; set; } = new List<string>();
@@ -602,7 +608,7 @@
 
                 var s = ChipsNetwork.Last();
                 //если первый элемент до знака ; содержит "-" (это означает, что указан диапазон)
-                if (s.Split(";")[0].Contains("-"))
+                if (s.Substring(1).Split(";")[0].Contains("-"))
                 {
                     var first = s.Split(";")[0].Split("-")[0].ToInt();
                     var last = s.Split(";")[0].Split("-")[1].ToInt();
@@ -653,7 +659,7 @@
                 }
                 else
                 {
-                    var index = s.Split(";")[0].Split("-")[0].ToInt();
+                    var index = s.Split(";")[0].ToInt();
                     var floorHeight = s.Split(";")[1].ToDouble();
                     double ductWidth = 0, ductHeight = 0;
                     if (s.Split(";")[2].Contains("x") /*английская иск*/)
@@ -726,7 +732,7 @@
     {
         var s = ChipsNetwork.Last();
 
-        if (s.Split(";")[0].Contains("-"))
+        if (s.Substring(1).Split(";")[0].Contains("-"))
         {
             var first = s.Split(";")[0].Split("-")[0].ToInt();
             var last = s.Split(";")[0].Split("-")[1].ToInt();

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,9 +34,6 @@
     <Compile Include="..\..\consoleRemHall\NaturalPhenomenaIndependent\Climate.cs">
       <Link>RemoveHall\NaturalPhenomenaIndependent\Climate.cs</Link>
     </Compile>
-    <Compile Include="..\..\consoleRemHall\SemanticObjects\-.cs">
-      <Link>RemoveHall\SemanticObjects\-.cs</Link>
-    </Compile>
     <Compile Include="..\..\consoleRemHall\SemanticObjects\Floor.cs">
       <Link>RemoveHall\SemanticObjects\Floor.cs</Link>
     </Compile>
@@ -67,6 +64,8 @@
     <Compile Include="..\..\consoleRemHall\Support\Converter.cs">
       <Link>RemoveHall\Support\Converter.cs</Link>
     </Compile>
+    <Compile Include="..\..\consoleRemHall\Support\Helpers.cs" Link="RemoveHall\Helpers.cs" />
+    <Compile Include="..\..\consoleRemHall\Support\SortedListFixed.cs" Link="RemoveHall\SortedListFixed.cs" />
   </ItemGroup>
 
   <ItemGroup>

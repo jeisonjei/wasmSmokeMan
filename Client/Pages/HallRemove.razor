@@ -397,7 +397,7 @@
         chipsNetworkAttributes.Add("id", "chipsnetwork");
         chipsNetworkAttributes.Add("data-toggle", "tooltip");
         chipsNetworkAttributes.Add("data-placement", "top");
-        chipsNetworkAttributes.Add("data-title", "<div><div><div class='text-left'><strong>Формат ввода этажа</strong></div><div class='text-left'><code>[номер этажа]</code>;</div><div class='text-left'><code>[высота этажа]</code>;</div><div class='text-left'><code>[ширина воздуховода]</code>x<code>[высота воздуховода]</code>;</div><div class='text-left'><code>[дополнительная длина воздуховодов]</code>;</div><div class='text-left'><code>[сумма КМС на участке]</code>;</div><div class='text-left'><code>[ширина клапана]</code>x<code>[высота клапана]</code>(необяз., при наличии);</div></div><div><div class='text-left'><strong>Формат ввода диапазона этажей</strong></div><div class='text-left'><code>[первый этаж]</code>-<code>[последний этаж]</code>;</div><div class='text-left'><code>[высота этажей]</code>;</div><div class='text-left'><code>[ширина воздуховода]</code>x<code>[высота воздуховода]</code>;</div><div class='text-left'><code>[дополнительная длина воздуховодов]</code>;</div><div class='text-left'><code>[сумма КМС на участке]</code>;</div><div class='text-left'><code>[ширина клапана]</code>x<code>[высота клапана]</code>(необяз., при наличии);</div><div class='text-left'>*строка должна заканчиваться знаком точка-с-запятой \";\"</div></div></div>");
+        chipsNetworkAttributes.Add("data-title", "<div><div><div class='text-left'><strong>Формат ввода этажа</strong></div><div class='text-left'><code>[номер этажа]</code>;</div><div class='text-left'><code>[высота этажа]</code>;</div><div class='text-left'><code>[ширина воздуховода]</code>x<code>[высота воздуховода]</code>;</div><div class='text-left'><code>[дополнительная длина воздуховодов]</code>;</div><div class='text-left'><code>[сумма КМС на участке]</code>;</div><div class='text-left'><code>[ширина клапана]</code>x<code>[высота клапана]</code>(необяз., при наличии);</div></div><div><div class='text-left'><strong>Формат ввода диапазона этажей</strong></div><div class='text-left'><code>[первый этаж]</code>,<code>[последний этаж]</code>;</div><div class='text-left'><code>[высота этажей]</code>;</div><div class='text-left'><code>[ширина воздуховода]</code>x<code>[высота воздуховода]</code>;</div><div class='text-left'><code>[дополнительная длина воздуховодов]</code>;</div><div class='text-left'><code>[сумма КМС на участке]</code>;</div><div class='text-left'><code>[ширина клапана]</code>x<code>[высота клапана]</code>(необяз., при наличии);</div><div class='text-left'>*строка должна заканчиваться знаком точка-с-запятой \";\"</div></div></div>");
         resultsAttr = new Dictionary<string, object>();
         resultsAttr.Add("id", "results");
         BuildingTypeAttr1 = new Dictionary<string, object>();
@@ -604,14 +604,13 @@
             //проверка на наличие элементов в списке строк ChipsNetwork для того, чтобы избежать появлении ошибки при обращении к пустому списку
             if (ChipsNetwork.Count > 0)
             {
-                //если значение счётчика на момент вызова больше, чем количество элементов в списке ChipsNetwork - значит было не добавление, а удаление. Нужно удалить нужный элемент из списка Network.System
 
                 var s = ChipsNetwork.Last();
                 //если первый элемент до знака ; содержит "-" (это означает, что указан диапазон)
-                if (s.Substring(1).Split(";")[0].Contains("-"))
+                if (s.Split(";")[0].Contains(","))
                 {
-                    var first = s.Split(";")[0].Split("-")[0].ToInt();
-                    var last = s.Split(";")[0].Split("-")[1].ToInt();
+                    var first = s.Split(";")[0].Split(",")[0].ToInt();
+                    var last = s.Split(";")[0].Split(",")[1].ToInt();
                     var floorHeight = s.Split(";")[1].ToDouble();
                     double ductWidth = 0, ductHeight = 0;
                     if (s.Split(";")[2].Contains("x") /*английская иск*/)
@@ -654,7 +653,15 @@
                     }
                     else
                     {
-                        Toast.Add($"Добавлено {last - first + 1} участков(а)", MatToastType.Info);
+                        // если первый этаж диапазона с отрицательным индексом, то в диапазон не включается этаж 0
+                        if(first<0&&last>0)
+                            {
+                                Toast.Add($"Добавлено {last-first} участков(а)",MatToastType.Info);
+                            }
+                            // для остальных случаев
+                            else{
+                                Toast.Add($"Добавлено {last - first + 1} участков(а)", MatToastType.Info);
+                            }
                     }
                 }
                 else
@@ -732,12 +739,18 @@
     {
         var s = ChipsNetwork.Last();
 
-        if (s.Substring(1).Split(";")[0].Contains("-"))
+        if (s.Substring(1).Split(";")[0].Contains(","))
         {
-            var first = s.Split(";")[0].Split("-")[0].ToInt();
-            var last = s.Split(";")[0].Split("-")[1].ToInt();
+            var first = s.Split(";")[0].Split(",")[0].ToInt();
+            var last = s.Split(";")[0].Split(",")[1].ToInt();
             Network.RemoveRange((first, last));
-            Toast.Add($"Удалено {last - first + 1} участков(а)", MatToastType.Primary);
+            if(first<0&&last>0)
+                {
+                    Toast.Add($"Удалено {last-first} участков(а)",MatToastType.Primary);
+                }
+                else{
+                    Toast.Add($"Удалено {last - first + 1} участков(а)", MatToastType.Primary);
+                }
         }
         else
         {

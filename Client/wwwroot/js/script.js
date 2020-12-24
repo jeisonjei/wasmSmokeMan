@@ -1,6 +1,6 @@
 ﻿window.funcs = {
     pop: function () {
-        $('.pop').popover({trigger: 'hover', placement: 'auto'})
+        $('.pop').popover({trigger: 'focus', placement: 'auto'})
     },
     selectpicker: function () {
         $(".selectpicker").selectpicker()

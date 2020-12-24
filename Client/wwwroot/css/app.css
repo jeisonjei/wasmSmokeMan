@@ -48,10 +48,10 @@ a, .btn-link {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+.popover{
+    max-width:30%;
 }
-/*.popover{
-    max-width:35%;
-}*/
 #v-pills-tab .nav-link {
     color: #3d3d3d !important;
 }

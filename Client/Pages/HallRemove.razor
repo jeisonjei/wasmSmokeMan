@@ -31,7 +31,9 @@
                 <div class="mt-2">
                     <button class="btn btn-outline-danger btn-lg" @onclick="AssignShowResult">Расчёт</button>
                 </div>
-                
+                <div class="mt-2">
+                    <button class="btn btn-outline-secondary btn-lg" @onclick="ClearNetwork">Очистить этажи</button>
+                </div>
             </div>
         </div>
         <div class="col-md-8 col-lg-4 col-xl-4 overflow-auto" style="height:85vh">
@@ -215,7 +217,7 @@
                         {
                             <tr>
                                 <td>@part.Floor.Index</td>
-                                <td>@part.Floor.Level.RoundTo2()</td>0
+                                <td>@part.Floor.Level.RoundTo2()</td>
                                 <td>@part.NetPart.Duct.Width.RoundTo0() x @part.NetPart.Duct.Height.RoundTo0()</td>
                                 @if (@part.NetPart.Valve != null)
                                 {
@@ -397,7 +399,7 @@
         chipsNetworkAttributes.Add("id", "chipsnetwork");
         chipsNetworkAttributes.Add("data-toggle", "tooltip");
         chipsNetworkAttributes.Add("data-placement", "top");
-        chipsNetworkAttributes.Add("data-title", "<div><div><div class='text-left'><strong>Формат ввода этажа</strong></div><div class='text-left'><code>[номер этажа]</code>;</div><div class='text-left'><code>[высота этажа]</code>;</div><div class='text-left'><code>[ширина воздуховода]</code>x<code>[высота воздуховода]</code>;</div><div class='text-left'><code>[дополнительная длина воздуховодов]</code>;</div><div class='text-left'><code>[сумма КМС на участке]</code>;</div><div class='text-left'><code>[ширина клапана]</code>x<code>[высота клапана]</code>(необяз., при наличии);</div></div><div><div class='text-left'><strong>Формат ввода диапазона этажей</strong></div><div class='text-left'><code>[первый этаж]</code>,<code>[последний этаж]</code>;</div><div class='text-left'><code>[высота этажей]</code>;</div><div class='text-left'><code>[ширина воздуховода]</code>x<code>[высота воздуховода]</code>;</div><div class='text-left'><code>[дополнительная длина воздуховодов]</code>;</div><div class='text-left'><code>[сумма КМС на участке]</code>;</div><div class='text-left'><code>[ширина клапана]</code>x<code>[высота клапана]</code>(необяз., при наличии);</div><div class='text-left'>*строка должна заканчиваться знаком точка-с-запятой \";\"</div></div></div>");
+        chipsNetworkAttributes.Add("data-title", "<div><div><div class='text-left'><b>Формат ввода этажа</b></div><div class='text-left'><code>[номер этажа]</code><b>;</b></div><div class='text-left'><code>[высота этажа]</code><b>;</b></div><div class='text-left'><code>[ширина воздуховода]</code><b>x</b><code>[высота воздуховода]</code><b>;</b></div><div class='text-left'><code>[дополнительная длина воздуховодов]</code><b>;</b></div><div class='text-left'><code>[сумма КМС на участке]</code><b>;</b></div><div class='text-left'><code>[ширина клапана]</code><b>x</b><code>[высота клапана]</code>(только при наличии)<b>;</b></div></div><div><div class='text-left'><b>Формат ввода диапазона этажей</b></div><div class='text-left'><code>[первый этаж]</code><b>,</b><code>[последний этаж]</code><b>;</b></div><div class='text-left'><code>[высота этажей]</code><b>;</b></div><div class='text-left'><code>[ширина воздуховода]</code><b>x</b><code>[высота воздуховода]</code><b>;</b></div><div class='text-left'><code>[дополнительная длина воздуховодов]</code><b>;</b></div><div class='text-left'><code>[сумма КМС на участке]</code><b>;</b></div><div class='text-left'><code>[ширина клапана]</code><b>x</b><code>[высота клапана]</code>(только при наличии)<b>;</b></div><div class='text-left'>*строка должна заканчиваться знаком \"точка-с-запятой\" \"<b>;</b>\"</div></div></div>");
         resultsAttr = new Dictionary<string, object>();
         resultsAttr.Add("id", "results");
         BuildingTypeAttr1 = new Dictionary<string, object>();
@@ -472,7 +474,7 @@
     public string _1702_1703FieldName { get; set; } = "Ширина и высота двери";
     public string _1702_1703PopContent { get; set; } = "Ширина и высота двери из коридора по пути эвакуации (например в лестничную клетку)";
     public string NetworkFieldName { get; set; } = "Сеть воздуховодов";
-    public string NetworkPopContent { get; set; } = "......";
+    public string NetworkPopContent { get; set; } = "В поле вводятся данные об этажах и соответствующих этажам участках сети воздуховодов.<br/> Данные вводятся в виде строки, где значения разделяются знаком \"точка-с-запятой\" \"<b>;</b>\".<br/> В конце строки также обязательно ставится \"точка-с-запятой\" \"<b>;</b>\". Диапазон этажей разделяется знаком \"запятая\" \"<b>,</b>\".<br/> При наличии на этаже клапана, указываются его размеры (последнее значение в строке), при отсутствии клапана размеры не указываются (строка заканчивается указанием суммы КМС участка).</br> Ввод подтвержается нажатием <b>Enter</b>.<div><div><div class='text-left'><b>Формат ввода этажа</b></div><div class='text-left'><code>[номер этажа]</code><b>;</b></div><div class='text-left'><code>[высота этажа]</code><b>;</b></div><div class='text-left'><code>[ширина воздуховода]</code><b>x</b><code>[высота воздуховода]</code><b>;</b></div><div class='text-left'><code>[дополнительная длина воздуховодов]</code><b>;</b></div><div class='text-left'><code>[сумма КМС на участке]</code><b>;</b></div><div class='text-left'><code>[ширина клапана]</code><b>x</b><code>[высота клапана]</code>(только при наличии)<b>;</b></div></div><div><div class='text-left'><b>Формат ввода диапазона этажей</b></div><div class='text-left'><code>[первый этаж]</code><b>,</b><code>[последний этаж]</code><b>;</b></div><div class='text-left'><code>[высота этажей]</code><b>;</b></div><div class='text-left'><code>[ширина воздуховода]</code><b>x</b><code>[высота воздуховода]</code><b>;</b></div><div class='text-left'><code>[дополнительная длина воздуховодов]</code><b>;</b></div><div class='text-left'><code>[сумма КМС на участке]</code><b>;</b></div><div class='text-left'><code>[ширина клапана]</code><b>x</b><code>[высота клапана]</code>(только при наличии)<b>;</b></div><div class='text-left'>*строка должна заканчиваться знаком \"точка-с-запятой\" \"<b>;</b>\"</div></div></div>";
     public string _203LastFloorFN { get; set; } = "Индекс последнего этажа";
     public string _203LastFloorPC { get; set; } = "Этаж, который является последним для системы дымоудаления";
     public string _204FirstFloorFN { get; set; } = "Индекс первого этажа";
@@ -784,10 +786,17 @@
         catch (Exception ex)
         {
             Toast.Add(ex.Message, MatToastType.Danger);
-            Console.WriteLine(ex.Message);
         }
     }
-
+    void ClearNetwork(){
+        try{
+            Network.System.Clear();
+            ChipsNetwork.Clear();
+        }
+        catch(Exception ex){
+            Toast.Add(ex.Message,MatToastType.Danger);
+        }
+    }
     #endregion
     #region showOpeningsReportTable
 
